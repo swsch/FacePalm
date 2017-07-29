@@ -1,0 +1,93 @@
+TYPE;NAME OF LINE;NAME OF FIRST POINT;NAME OF SECOND POINT;DESCRIPTION
+line;A;2;7;Mittellinie ML
+line;B;47;48;Mundwinkel
+line;C;31;47;Pupille li und Mundwinkel li
+line;D;32;48;Pupille re und Mundwinkel re
+line;E;23;25;Augenwinkel li
+line;F;24;26;Augenwinkel re
+line;G;13;14;Gesichtsränder Augenhöhe
+line;H;67;68;Mitte innere Augenbrauenkanten
+line;I;35;36;innere Augenbrauenkanten unten
+;;;;
+TYPE;NAME OF SEGMENT;NAME OF FIRST POINT;NAME OF SECOND POINT;DESCRIPTION
+segment;d1;23;24;Augenwinkel außen
+segment;d2;25;26;Augenwinkel innen
+segment;d3;15;16;äußerster Gesichtsrand
+segment;d4;41;42;äußerster Nasenflügel
+segment;d5;47;48;Mundwinkel
+segment;d6;17;18;Gesichtsrand Mundwinkel
+segment;d7;2;12;Haare-Unterkiefer auf ML
+segment;d8;12;64;Pupillenmitte-Unterkiefer auf ML
+segment;d9;7;63;höchster Lidpunkt-Lippenrotgrenze auf ML
+segment;d10;35;36;innere Augenbrauenkanten unten
+;;;;
+TYPE;GROUP;NAME OF POINT;DESCRIPTION;
+point;Augen;23;Augenwinkel li außen;
+point;Augen;24;Augenwinkel re außen;
+point;Augen;25;Augenwinkel li innen;
+point;Augen;26;Augenwinkel re innen;
+point;Augen;27;höchster P auf dem Lid li;
+point;Augen;28;höchster P auf dem Lid re;
+point;Augen;29;tiefster P auf dem Lid li;
+point;Augen;30;tiefster P auf dem Lid re;
+point;Augen;31;Pupille Auge li;
+point;Augen;32;Pupille Auge re;
+point;Augen;57;SP C mit Oberrand Auge li;
+point;Augen;58;SP D mit Oberrand Auge re;
+point;Augen;59;SP C mit Unterrand Auge li;
+point;Augen;60;SP D mit Unterrand Auge re;
+point;Augen;61;höchster LidP Auge li;
+point;Augen;62;höchster LidP Auge re;
+point;Augen;63;SP ML mit Achse(61/62);
+point;Augen;64;SP ML mit Achse(31/32) Pupillenmitte;
+point;Augen;65;SP ML mit Achse(15/16);
+point;Augen;66;SP ML mit Achse(17/18);
+point;Augenbrauen;33;höchster P Oberrand Augenbraue li;
+point;Augenbrauen;34;höchster P Oberrand Augenbraue re;
+point;Augenbrauen;35;unterster P Augenbraue li innen;
+point;Augenbrauen;36;unterster P Augenbraue re innen;
+point;Augenbrauen;37;äußerster P Augenbraue li außen;
+point;Augenbrauen;38;äußerster P Augenbraue re außen;
+point;Augenbrauen;39;tiefster P Unterrand Augenbraue li;
+point;Augenbrauen;40;tiefster P Unterrand Augenbraue re;
+point;Augenbrauen;53;SP C mit Oberrand Augenbraue li;
+point;Augenbrauen;54;SP D mit Oberrand Augenbraue re;
+point;Augenbrauen;55;SP C mit Unterrand Augenbraue li;
+point;Augenbrauen;56;SP D mit Unterrand Augenbraue re;
+point;Augenbrauen;67;Mitte Augenbrauenkante li innen;
+point;Augenbrauen;68;Mitte Augenbrauenkante re innen;
+point;Gesicht allg.;3;SP H mit A, ML zw. Augenbrauen;
+point;Gesicht allg.;10;SP ML mit tiefster P Kinn;
+point;Gesicht allg.;11;SP ML mit am weitesten hervorstehenden P des Kinns;
+point;Gesicht allg.;69;SP ML mit I;
+point;Gesichts-/Kieferform;1;höchster P des Kopfes;
+point;Gesichts-/Kieferform;2;SP der Haare auf der ML A;
+point;Gesichts-/Kieferform;12;SP ML mit tiefstem P am Unterkiefer;
+point;Gesichts-/Kieferform;13;SP E mit Gesichtsrand li außen;
+point;Gesichts-/Kieferform;14;SP F mit Gesichtsrand re außen;
+point;Gesichts-/Kieferform;15;äußerster P Gesichtsrand li;
+point;Gesichts-/Kieferform;16;äußerster P Gesichtsrand re;
+point;Gesichts-/Kieferform;17;SP B mit Gesichtsrand li außen;
+point;Gesichts-/Kieferform;18;SP B mit Gesichtsrand re außen;
+point;Gesichts-/Kieferform;19;SP Halsansatz li mit Gesicht;
+point;Gesichts-/Kieferform;20;SP Halsansatz re mit Gesicht;
+point;Gesichts-/Kieferform;21;SP C mit Gesichtsrand unten li;
+point;Gesichts-/Kieferform;22;SP D mit Gesichtsrand unten re;
+point;Mund/Lippen;7;SP ML mit obere Lippenrotgrenze;
+point;Mund/Lippen;8;SP ML mit geschlossene Lippen;
+point;Mund/Lippen;9;SP ML mit untere Lippenrotgrenze;
+point;Mund/Lippen;47;Mundwinkel li;
+point;Mund/Lippen;48;Mundwinkel re;
+point;Mund/Lippen;49;höchster P Lippenrotgrenze li oben;
+point;Mund/Lippen;50;höchster P Lippenrotgrenze re oben;
+point;Mund/Lippen;51;oberster P geschlossene Lippen li;
+point;Mund/Lippen;52;oberster P geschlossene Lippen re;
+point;Nase;4;SP G mit A, tiefster P Nasenwurzel auf ML;
+point;Nase;5;höchster P Nasenspitze;
+point;Nase;6;MittelP Basis Nasenscheidewand;
+point;Nase;41;äußerster P Nasenflügel li;
+point;Nase;42;äußerster P Nasenflügel re;
+point;Nase;43;Übergang Ende Nasenflügel li in Oberlippe;
+point;Nase;44;Übergang Ende Nasenflügel re in Oberlippe;
+point;Nase;45;höchster P Nasenhöhle li;
+point;Nase;46;höchster P Nasenhöhle re;
