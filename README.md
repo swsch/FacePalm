@@ -16,4 +16,3 @@ Todo
 	- for assistant: How to FacePalm
   * add build instructions
   * provide link to binary distribution
-  * describe 
