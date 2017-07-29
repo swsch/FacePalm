@@ -8,4 +8,12 @@ The _research organizer_ defines lists of points, lines and segments in a simple
 _Research assistants_ then manually locate the required points on photographs or scans, lines and segments are drawn automatically once their defining points have been set.
 Finally point coordinates and segment lengths are exported to a CSV file for further processing.
 
+----
+Todo
 
+  * add user manual
+    - for organizer: Describe Format of CSV File Contents
+	- for assistant: How to FacePalm
+  * add build instructions
+  * provide link to binary distribution
+  * describe 
