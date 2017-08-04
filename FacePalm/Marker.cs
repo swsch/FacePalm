@@ -12,7 +12,7 @@ namespace FacePalm {
 
         private Point _point;
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string Description { get; set; }
 

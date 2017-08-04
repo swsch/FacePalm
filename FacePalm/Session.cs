@@ -187,10 +187,9 @@ namespace FacePalm {
                                      .Where(l => l.StartsWith("point"))) {
                 var f = line.Split(';');
                 if (f.Length < 4) continue;
-                if (!int.TryParse(f[1], out var p)) continue;
                 if (!int.TryParse(f[2], out var x)) continue;
                 if (!int.TryParse(f[3], out var y)) continue;
-                var m = GeometryDefinition.GetPoint(p);
+                var m = GeometryDefinition.GetPoint(f[1]);
                 m.Point = new Point(S(x), S(y));
             }
         }

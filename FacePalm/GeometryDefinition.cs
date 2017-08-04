@@ -48,10 +48,8 @@ namespace FacePalm {
         private void LoadSegments(IEnumerable<string> lines) {
             foreach (var line in lines) {
                 var fields = line.Split(';');
-                if (!int.TryParse(fields[2], out var m1Id)) continue;
-                if (!int.TryParse(fields[3], out var m2Id)) continue;
-                var m1 = GetPoint(m1Id);
-                var m2 = GetPoint(m2Id);
+                var m1 = GetPoint(fields[2]);
+                var m2 = GetPoint(fields[3]);
                 if (m1 == null || m2 == null) continue;
                 Segments.Add(new Segment {Id = fields[1], M1 = m1, M2 = m2, Description = fields[4]});
             }
@@ -60,10 +58,8 @@ namespace FacePalm {
         private void LoadLines(IEnumerable<string> lines) {
             foreach (var line in lines) {
                 var fields = line.Split(';');
-                if (!int.TryParse(fields[2], out var m1Id)) continue;
-                if (!int.TryParse(fields[3], out var m2Id)) continue;
-                var m1 = GetPoint(m1Id);
-                var m2 = GetPoint(m2Id);
+                var m1 = GetPoint(fields[2]);
+                var m2 = GetPoint(fields[3]);
                 if (m1 == null || m2 == null) continue;
                 Axes.Add(new Axis {Id = fields[1], M1 = m1, M2 = m2, Description = fields[4]});
             }
@@ -72,12 +68,11 @@ namespace FacePalm {
         private void LoadPoints(IEnumerable<string> lines) {
             foreach (var line in lines) {
                 var fields = line.Split(';');
-                if (!int.TryParse(fields[2], out var id)) continue;
-                Markers.Add(new Marker {Id = id, Description = fields[3]});
+                Markers.Add(new Marker {Id = fields[2], Description = fields[3]});
             }
         }
 
-        public Marker GetPoint(int id) => Markers.FirstOrDefault(p => p.Id == id);
+        public Marker GetPoint(string id) => Markers.FirstOrDefault(p => p.Id.Equals(id));
 
         public Axis GetLine(string id) => Axes.FirstOrDefault(l => l.Id.Equals(id));
 
