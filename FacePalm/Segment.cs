@@ -11,6 +11,7 @@ namespace FacePalm {
         public Brush Brush => IsDefined ? MarkerBrush.Segment: MarkerBrush.Transparent;
 
         public double Length(double dpiXCorrection, double dpiYCorrection) {
+            if (!IsDefined) return 0;
             var dx = (M1.Point.X - M2.Point.X) * dpiXCorrection;
             var dy = (M1.Point.Y - M2.Point.Y) * dpiYCorrection;
             return Math.Sqrt(dx * dx + dy * dy);
