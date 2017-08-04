@@ -63,8 +63,8 @@ Points require the following fields in exactly this sequence:
 
   1. the keyword `point`
   2. group name: this is currently not used by FacePalm, but intended to help manage large lists of points
-  3. number of the point: must be a unique integer
-  4. description of the location
+  3. name of the point: must be unique to identify points for lines and segments
+  4. informative description of the location
 
 Points use their number as part of coordinate labels during export: The coordinates for point `23` are written to columns `X23` and `Y23`.
 
@@ -74,11 +74,12 @@ Line segments require the following fields in exactly this sequence:
 
   1. the keyword `segment`
   2. name of the segment: a text label
-  3. number of the starting point
-  4. number of the end point
+  3. name of the first point defining the segment
+  4. name of the second point defining the segment
   5. description of the line segment
 
 Line segments use their name as column header during export: The length of line `d1` shows up in column `d1`.
+The segment name is displayed below the midpoint of the line segment drawn on the image.
 
 ### Defining Lines
 
@@ -86,11 +87,12 @@ Lines require the following fields in exactly this sequence:
 
   1. the keyword `line`
   2. name of the line: a text label
-  3. number of the starting point
-  4. number of the end point
+  3. name of the first point defining the line
+  4. name of the second point defining the line
   5. description of the line segment
 
 Lines are currently not exported.
+The line name is displayed near the first point outside of the segment defined by the two points.
 
 ## How to measure 2d images
 
