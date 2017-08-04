@@ -99,7 +99,6 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="FontWeight" Value="Bold" />
                         <Setter Property="FontSize" Value="14" />
-                        <Setter Property="Padding" Value="2" />
                     </Style>
                 </Canvas.Resources>
                 <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown" />
