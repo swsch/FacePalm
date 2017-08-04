@@ -18,13 +18,16 @@ namespace FacePalm {
         private string _imageFile = "";
 
         public Session() {
-            var temp = Environment.GetEnvironmentVariable("TEMP");
-            if (temp == null || !Directory.Exists(temp)) throw new IOException("TEMP directory missing!");
-            TempStorage = Path.Combine(temp, $"FacePalm-{Environment.TickCount:D16}");
-            TempDirs.Add(TempStorage);
+            SetupTempStorage();
+            GeometryDefinition = new GeometryDefinition();
         }
 
-        public string TempStorage { get; }
+        public Session(string definitionsFile) {
+            SetupTempStorage();
+            GeometryDefinition = GeometryDefinition.FromFile(definitionsFile);
+        }
+
+        public string TempStorage { get; private set; }
 
         [NotNull]
         public GeometryDefinition GeometryDefinition {
@@ -99,6 +102,13 @@ namespace FacePalm {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private void SetupTempStorage() {
+            var temp = Environment.GetEnvironmentVariable("TEMP");
+            if (temp == null || !Directory.Exists(temp)) throw new IOException("TEMP directory missing!");
+            TempStorage = Path.Combine(temp, $"FacePalm-{Environment.TickCount:D16}");
+            TempDirs.Add(TempStorage);
+        }
+
         public static void Cleanup() {
             foreach (var dir in TempDirs)
                 if (Directory.Exists(dir))
@@ -166,7 +176,7 @@ namespace FacePalm {
         }
 
         private void LoadPoints(string dataFile) {
-            double S(int d) => (int)(d / 100.0);
+            double S(int d) => (int) (d / 100.0);
             foreach (var line in File.ReadLines(Path.Combine(TempStorage, dataFile))
                                      .Where(l => l.StartsWith("point"))) {
                 var f = line.Split(';');
