@@ -26,16 +26,19 @@ namespace FacePalm {
 
         public MainWindow() {
             InitializeComponent();
-            Session = new Session();
-            if (File.Exists("Definitions.csv"))
-                Session.DefinitionsFile = Path.GetFullPath("Definitions.csv");
+            Session = File.Exists("Definitions.csv")
+                ? new Session("Definitions.csv")
+                : new Session();
         }
 
         public Session Session {
             get => _session;
             private set {
                 if (Equals(value, _session)) return;
+                if (_session != null)
+                    _session.GeometryDefinition.PropertyChanged -= GeometryDefinition_PropertyChanged;
                 _session = value;
+                _session.GeometryDefinition.PropertyChanged += GeometryDefinition_PropertyChanged;
                 OnPropertyChanged();
             }
         }
@@ -50,6 +53,13 @@ namespace FacePalm {
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void GeometryDefinition_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+            if (e.PropertyName.Equals("DefinedMarkersCount")) {
+                RedrawSegments(SegmentCanvas);
+                RedrawLines(LineCanvas);
+            }
+        }
 
 
         private void ZoomNormal_Click(object sender, RoutedEventArgs e) {
@@ -94,10 +104,7 @@ namespace FacePalm {
             var d = new OpenFileDialog {Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp"};
             var result = d.ShowDialog();
             if (result != true) return;
-            Session = new Session {
-                DefinitionsFile = Session.DefinitionsFile,
-                ImageFile = d.FileName
-            };
+            Session = new Session(Session.DefinitionsFile, d.FileName);
             LoadPhoto(new Uri(d.FileName, UriKind.Absolute));
             RedrawSegments(SegmentCanvas);
             RedrawLines(LineCanvas);
@@ -108,7 +115,7 @@ namespace FacePalm {
             var d1 = new OpenFileDialog {Title = "Load definitions ...", Filter = "Geometry defintions (*.csv)|*.csv"};
             var result1 = d1.ShowDialog();
             if (result1 != true) return;
-            Session.DefinitionsFile = d1.FileName;
+            Session = new Session(d1.FileName, Session.ImageFile);
             RedrawSegments(SegmentCanvas);
             RedrawLines(LineCanvas);
             RedrawPoints(PointCanvas);
@@ -132,7 +139,7 @@ namespace FacePalm {
                 } else {
                     Session = s;
                     LoadPhoto(new Uri(s.ImageFile, UriKind.Absolute));
-            RedrawSegments(SegmentCanvas);
+                    RedrawSegments(SegmentCanvas);
                     RedrawLines(LineCanvas);
                     RedrawPoints(PointCanvas);
                 }
@@ -239,7 +246,8 @@ namespace FacePalm {
 
         private void RedrawLines(Canvas c) {
             c.Children.Clear();
-            foreach (var line in Session.GeometryDefinition.Axes.Where(l => l.IsDefined)) line.DrawLine(c, _scale);
+            foreach (var line in Session.GeometryDefinition.Axes.Where(l => l.IsDefined))
+                line.DrawLine(c, _scale);
         }
 
         private void RedrawPoints(Canvas c) {
@@ -284,24 +292,22 @@ namespace FacePalm {
 
 
         private void ExportResults(string filename) {
-            int S(double d, double c = 1.0) => (int)(d * c * 100.0);
+            int S(double d, double c = 1.0) => (int) (d * c * 100.0);
             var writeHeaders = !File.Exists(filename);
             try {
                 using (var sw = new StreamWriter(filename, true, Encoding.Default)) {
-                    var sortedMarkers = new List<Marker>(Session.GeometryDefinition.Markers);
-                    sortedMarkers.Sort((m1, m2) => m1.Id.CompareTo(m2.Id));
-                    var sortedSegments = new List<Segment>(Session.GeometryDefinition.Segments);
-                    sortedSegments.Sort((s1, s2) => string.Compare(s1.Id, s2.Id, StringComparison.Ordinal));
+                    var markers = new List<Marker>(Session.GeometryDefinition.Markers);
+                    var segments = new List<Segment>(Session.GeometryDefinition.Segments);
                     if (writeHeaders) {
                         sw.Write("Id");
-                        sortedMarkers.ForEach(m => sw.Write($";X{m.Id};Y{m.Id}"));
-                        sortedSegments.ForEach(s => sw.Write($";{s.Id}"));
+                        markers.ForEach(m => sw.Write($";X{m.Id};Y{m.Id}"));
+                        segments.ForEach(s => sw.Write($";{s.Id}"));
                         sw.WriteLine();
                     }
                     sw.Write(Session.Id);
-                    sortedMarkers.ForEach(
+                    markers.ForEach(
                         m => sw.Write($";{S(m.Point.X, _dpiXCorrection)};{S(m.Point.Y, _dpiYCorrection)}"));
-                    sortedSegments.ForEach(s => sw.Write($";{S(s.Length(_dpiXCorrection, _dpiYCorrection))}"));
+                    segments.ForEach(s => sw.Write($";{S(s.Length(_dpiXCorrection, _dpiYCorrection))}"));
                     sw.WriteLine();
                 }
             } catch (IOException) {
