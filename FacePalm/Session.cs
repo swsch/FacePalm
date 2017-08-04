@@ -27,6 +27,12 @@ namespace FacePalm {
             GeometryDefinition = GeometryDefinition.FromFile(definitionsFile);
         }
 
+        public Session(string definitionsFile, string imageFile) : this(definitionsFile) {
+            ImageFile = imageFile;
+        }
+
+
+
         public string TempStorage { get; private set; }
 
         [NotNull]
