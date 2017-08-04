@@ -24,5 +24,5 @@ solution file.
 
 ## Documentation
 
-  * [[How to Prepare a Definitions File|HowTo_Definitions]]
-  * [[How to Measure 2d Images|HowTo_Measure]] (todo)
+  * [How to Prepare a Definitions File](/swsch/FacePalm/wiki/HowTo_Definitions)
+  * [How to Measure 2d Images](/swsch/FacePalm/wiki/HowTo_Measure) (todo)
