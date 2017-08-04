@@ -88,8 +88,8 @@ namespace FacePalm {
 
         public void SetPoint(Marker marker, Point point) {
             marker.Point = point;
-            OnPropertyChanged(nameof(DefinedAxesCount));
             OnPropertyChanged(nameof(DefinedMarkersCount));
+            OnPropertyChanged(nameof(DefinedAxesCount));
             OnPropertyChanged(nameof(DefinedSegmentsCount));
         }
     }
