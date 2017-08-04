@@ -38,9 +38,7 @@ namespace FacePalm {
         public virtual event PropertyChangedEventHandler PropertyChanged;
 
         private void MarkerPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            OnPropertyChanged(nameof(IsDefined));
-            OnPropertyChanged(nameof(Brush));
-            OnPropertyChanged(nameof(BackgroundBrush));
+            OnPropertyChanged(e.PropertyName);
         }
 
         [NotifyPropertyChangedInvocator]
