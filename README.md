@@ -12,14 +12,14 @@ The _research organizer_ defines lists of landmarks, which in turn define lines 
 _Research assistants_ then manually locate the required points on photographs or scans, lines and segments are drawn automatically once their defining points have been set.
 Finally point coordinates and segment lengths are exported to a CSV file for further processing, while graphical elements can be hidden or shown to prepare visual material for presentations.
 
-## Download Binary Stable Release
+### Download Binary Stable Release
 A precompiled binary release archive for modern Windows systems 
 (Win 7 or later with .NET 4.5) of the software and manual along with the 
 description files („face.csv“, „palm.csv“) will shortly be available from [FacePalm_v1.0](http://www.psych2.phil.uni-erlangen.de/~oschult/humanlab/resources/resources_Facepalm.htm).
 
-## Build Instructions
+### Build Instructions
 FacePalm is being developed with Microsoft Visual Studio 2017 Enterprise, 
-but should build with other ediitions as long as it can make sense of the
+but should build with other editions as long as it can make sense of the
 solution file.
 
 ## How to Prepare a Definitions File
@@ -55,7 +55,8 @@ point;eyes;23;outside eye corner, left;
 ...
 ```
 
-This format is easy to work with for both humans and the software, while flexible enough to be used in a multitude of research areas.
+The "names" within each section must be unique to be useful. The items are used in the same order as they are listed in the definitions, both on screen and during data export.
+This gives the research organizer the maximum amount of control.
 
 ### Defining Points
 
