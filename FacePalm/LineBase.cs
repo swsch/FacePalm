@@ -8,10 +8,14 @@ namespace FacePalm {
     public abstract class LineBase : INotifyPropertyChanged {
         private Marker _m1;
         private Marker _m2;
+        private string _description;
 
         public string Id { get; set; }
 
-        public string Description { get; set; }
+        public string Description {
+            get => $"{_description} {Markers}";
+            set => _description = value;
+        }
 
         public bool Visible { get; set; } = true;
 
@@ -30,6 +34,8 @@ namespace FacePalm {
                 M2.PropertyChanged += MarkerPropertyChanged;
             }
         }
+
+        public string Markers => $"({M1.Id}/{M2.Id})";
 
         public bool IsDefined => M1.IsDefined && M2.IsDefined;
 
