@@ -24,7 +24,7 @@ namespace FacePalm {
 
         public Session(string definitionsFile) {
             SetupTempStorage();
-            GeometryDefinition = GeometryDefinition.FromFile(definitionsFile);
+            DefinitionsFile = definitionsFile;
         }
 
         public Session(string definitionsFile, string imageFile) : this(definitionsFile) {
