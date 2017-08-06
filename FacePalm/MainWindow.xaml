@@ -9,14 +9,16 @@
         </DockPanel.Resources>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Open session..." Click="LoadSession_Click"></MenuItem>
-                <MenuItem Header="Save session as..." Click="SaveSession_Click"></MenuItem>
-                <MenuItem Header="Export data to CSV..." Click="ExportResults_Click"></MenuItem>
+                <MenuItem Header="Open session..." Click="LoadSession_Click" />
+                <MenuItem Header="Save session as..." Click="SaveSession_Click" />
+                <MenuItem Header="Export data to CSV..." Click="ExportResults_Click" />
                 <Separator />
-                <MenuItem Header="Open image..." Click="OpenImage_Click"></MenuItem>
-                <MenuItem Header="Export current image as..." Click="SaveImage_Click"></MenuItem>
+                <MenuItem Header="Open image..." Click="OpenImage_Click" />
+                <MenuItem Header="Export current image as..." Click="SaveImage_Click" />
                 <Separator />
-                <MenuItem Header="Load definitions..." Click="LoadDefinitions_Click"></MenuItem>
+                <MenuItem Header="Load definitions..." Click="LoadDefinitions_Click" />
+                <Separator />
+                <MenuItem Header="Quit" Click="Quit_Click" />
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Zoom out" Click="ZoomOut_Click" />

@@ -232,10 +232,11 @@ namespace FacePalm {
                 }
         }
 
-        private void ZoomPhoto(double newScale) {
+        private void ZoomPhoto(double newScale, ImageSource image = null) {
+            if (image == null) image = Photo.Source;
             Photo.LayoutTransform = new ScaleTransform(newScale, newScale, 0, 0);
-            Drawing.Width = Math.Max(Photo.ActualWidth * newScale, Viewer.ViewportWidth);
-            Drawing.Height = Math.Max(Photo.ActualHeight * newScale, Viewer.ViewportHeight);
+            Drawing.Width = Math.Max(image.Width * newScale, Viewer.ViewportWidth);
+            Drawing.Height = Math.Max(image.Height * newScale, Viewer.ViewportHeight);
             Viewer.ScrollToHorizontalOffset(newScale / _scale * Viewer.HorizontalOffset);
             Viewer.ScrollToVerticalOffset(newScale / _scale * Viewer.VerticalOffset);
             _scale = newScale;
@@ -346,6 +347,10 @@ namespace FacePalm {
 
         private void ShowSegments_Click(object sender, RoutedEventArgs e) {
             SegmentCanvas.Visibility = Visibility.Visible;
+        }
+
+        private void Quit_Click(object sender, RoutedEventArgs e) {
+            Close();
         }
     }
 }
