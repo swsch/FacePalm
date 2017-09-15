@@ -74,7 +74,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <ListBox Grid.Row="1" ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}" x:Name="AxesBox" SelectionChanged="Axes_SelectionChanged">
+            <ListBox Grid.Row="1" ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}" x:Name="SegmentsBox" SelectionChanged="Segments_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -84,7 +84,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <ListBox Grid.Row="2" ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}" x:Name="SegmentsBox" SelectionChanged="Segments_SelectionChanged">
+            <ListBox Grid.Row="2" ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}" x:Name="AxesBox" SelectionChanged="Axes_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

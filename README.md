@@ -23,7 +23,7 @@ description files („face.csv“, „palm.csv“) will shortly be available from [FaceP
 
 ## Building from Source
 FacePalm is being developed with Microsoft Visual Studio 2017 Enterprise, 
-but should build with other editions as long as it can make sense of the
+but should build with other editions and versions as long as it can make sense of the
 solution file.
 
 ## Documentation

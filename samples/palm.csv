@@ -1,0 +1,15 @@
+TYPE;NAME OF SEGMENT;NAME OF FIRST POINT;NAME OF SECOND POINT;DESCRIPTION
+segment;2d_left;1;2;2d_left
+segment;4d_left;3;4;4d_left
+segment;2d_right;5;6;2d_right
+segment;4d_right;7;8;4d_right
+;;;;
+TYPE;GROUP;NAME OF POINT;DESCRIPTION;
+point;left_hand;1;2d_left_bottom;
+point;left_hand;2;2d_left_top;
+point;left_hand;3;4d_left_bottom;
+point;left_hand;4;4d_left_top;
+point;right_hand;5;2d_right_bottom;
+point;right_hand;6;2d_right_top;
+point;right_hand;7;4d_right_bottom;
+point;right_hand;8;4d_right_top;
