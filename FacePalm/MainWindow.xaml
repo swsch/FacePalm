@@ -1,5 +1,11 @@
-﻿<Window x:Class="FacePalm.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:FacePalm" mc:Ignorable="d" Title="Face/Palm Measuring Tool" MinHeight="600" MinWidth="800" Loaded="Window_Loaded" Closed="Window_Closed">
-    <DockPanel LastChildFill="True" DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+﻿<Window x:Class="FacePalm.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:FacePalm"
+        mc:Ignorable="d" Title="Face/Palm Measuring Tool" MinHeight="600" MinWidth="800" Loaded="Window_Loaded"
+        Closed="Window_Closed">
+    <DockPanel LastChildFill="True"
+               DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
         <DockPanel.Resources>
             <Style TargetType="Button">
                 <Setter Property="MinWidth" Value="90" />
@@ -58,56 +64,78 @@
                 <Run Text="{Binding AllSegmentsCount, Mode=OneWay}" />
             </TextBlock>
         </StatusBar>
-        <Grid DockPanel.Dock="Left" HorizontalAlignment="Left" Margin="0,0,6,0" MinWidth="100">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <ListBox Grid.Row="0" SelectedItem="{Binding CurrentMarker, Mode=TwoWay}" ItemsSource="{Binding Session.GeometryDefinition.Markers, Mode=OneWay}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Right" Margin="0,0,12,0" FontWeight="Bold" Background="{Binding Brush}" />
-                            <TextBlock Text="{Binding Description}" Width="Auto" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <ListBox Grid.Row="1" ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}" x:Name="SegmentsBox" SelectionChanged="Segments_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Left" Margin="0,0,12,0" FontWeight="Bold" Background="{Binding Brush}" />
-                            <TextBlock Text="{Binding Description}" Width="Auto" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <ListBox Grid.Row="2" ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}" x:Name="AxesBox" SelectionChanged="Axes_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Left" Margin="0,0,12,0" FontWeight="Bold" Background="{Binding Brush}" />
-                            <TextBlock Text="{Binding Description}" Width="Auto" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+        <Grid DockPanel.Dock="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid HorizontalAlignment="Left" Margin="0,0,6,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Points:" Margin="0,4,0,0" />
+                <ListBox Grid.Row="1" SelectedItem="{Binding CurrentMarker, Mode=TwoWay}"
+                         Width="300"
+                         ItemsSource="{Binding Session.GeometryDefinition.Markers, Mode=OneWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Right"
+                                           Margin="0,0,12,0"
+                                           FontWeight="Bold" Background="{Binding Brush}" />
+                                <TextBlock Text="{Binding Description}" Width="Auto" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Row="2" Text="Segments:" Margin="0,4,0,0" />
+                <ListBox Grid.Row="3" ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}"
+                         Width="300" x:Name="SegmentsBox" SelectionChanged="Segments_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Left" Margin="0,0,12,0"
+                                           FontWeight="Bold" Background="{Binding Brush}" />
+                                <TextBlock Text="{Binding Description}" Width="Auto" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Row="4" Text="Lines:" Margin="0,4,0,0" />
+                <ListBox Grid.Row="5" ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}"
+                         Width="300" x:Name="AxesBox" SelectionChanged="Axes_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Left" Margin="0,0,12,0"
+                                           FontWeight="Bold" Background="{Binding Brush}" />
+                                <TextBlock Text="{Binding Description}" Width="Auto" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <ScrollViewer Grid.Column="1" x:Name="Viewer" HorizontalScrollBarVisibility="Visible"
+                          VerticalScrollBarVisibility="Visible" CanContentScroll="False"
+                          SizeChanged="Viewer_SizeChanged">
+                <Canvas x:Name="Drawing" ClipToBounds="True">
+                    <Canvas.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="FontSize" Value="14" />
+                        </Style>
+                    </Canvas.Resources>
+                    <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown" />
+                    <Canvas x:Name="LineCanvas" IsHitTestVisible="False" />
+                    <Canvas x:Name="SegmentCanvas" IsHitTestVisible="False" />
+                    <Canvas x:Name="PointCanvas" IsHitTestVisible="False" Clip="{Binding Clip, ElementName=Photo}" />
+                </Canvas>
+            </ScrollViewer>
         </Grid>
-        <ScrollViewer x:Name="Viewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" CanContentScroll="False" SizeChanged="Viewer_SizeChanged">
-            <Canvas x:Name="Drawing" ClipToBounds="True">
-                <Canvas.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="FontSize" Value="14" />
-                    </Style>
-                </Canvas.Resources>
-                <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown" />
-                <Canvas x:Name="LineCanvas" IsHitTestVisible="False" />
-                <Canvas x:Name="SegmentCanvas" IsHitTestVisible="False" />
-                <Canvas x:Name="PointCanvas" IsHitTestVisible="False" Clip="{Binding Clip, ElementName=Photo}" />
-            </Canvas>
-        </ScrollViewer>
     </DockPanel>
 </Window>
