@@ -11,6 +11,7 @@ namespace FacePalm {
         private static readonly Thickness Padding = new Thickness(4, 0, 4, 1);
 
         private Point _point;
+        private bool _isDefined;
 
         public string Id { get; set; }
 
@@ -22,13 +23,18 @@ namespace FacePalm {
                 _point = value;
                 IsDefined = true;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsDefined));
+            }
+        }
+
+        public bool IsDefined {
+            get => _isDefined;
+            private set {
+                _isDefined = value;
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(Brush));
                 OnPropertyChanged(nameof(BackgroundBrush));
             }
         }
-
-        public bool IsDefined { get; private set; }
 
         public Brush Brush => IsDefined ? MarkerBrush.Marker : MarkerBrush.Transparent;
 

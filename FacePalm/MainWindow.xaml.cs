@@ -343,13 +343,13 @@ namespace FacePalm {
 
         private void Axis_MouseDown(object sender, MouseButtonEventArgs e) {
             if (!((sender as FrameworkElement)?.DataContext is Axis axis)) return;
-            axis.Visible = !axis.Visible;
+            axis.IsVisible = !axis.IsVisible;
             RedrawLines(LineCanvas);
         }
 
         private void Segment_MouseDown(object sender, MouseButtonEventArgs e) {
             if (!((sender as FrameworkElement)?.DataContext is Segment segment)) return;
-            segment.Visible = !segment.Visible;
+            segment.IsVisible = !segment.IsVisible;
             RedrawSegments(SegmentCanvas);
         }
     }

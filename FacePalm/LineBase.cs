@@ -9,6 +9,7 @@ namespace FacePalm {
         private Marker _m1;
         private Marker _m2;
         private string _description;
+        private bool _isVisible = true;
 
         public string Id { get; set; }
 
@@ -17,7 +18,14 @@ namespace FacePalm {
             set => _description = value;
         }
 
-        public bool Visible { get; set; } = true;
+        public bool IsVisible {
+            get => _isVisible;
+            set {
+                if (value == _isVisible) return;
+                _isVisible = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Marker M1 {
             get => _m1;

@@ -11,7 +11,7 @@ namespace FacePalm {
         public Brush Brush => IsDefined ? MarkerBrush.Axis : MarkerBrush.Transparent;
 
         public new void DrawLine(Canvas canvas, double scale) {
-            if (!Visible) return;
+            if (!IsVisible) return;
             var pg = new PathGeometry();
             var dy = M1.Point.Y - M2.Point.Y;
             var dx = M1.Point.X - M2.Point.X;

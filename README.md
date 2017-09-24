@@ -3,9 +3,9 @@ Face/Palm Measuring Tool: A stand-alone software for standardized hand and face 
 
 This tool helps researchers to manually pinpoint the locations required to perform standardized hand and face morphometry.
 
-Please cite this software (current release 1.0.3) as: 
+Please cite this software (current release 1.0.4) as: 
 > Köllner, M. G., Schmiedl, H., Waßer, J., & Schmiedl, S. (2017). Face/Palm Measuring Tool: A stand-alone software for standardized hand and face morphometry [Software and manual]. Erlangen. 
-> Retrieved from https://github.com/swsch/FacePalm/releases/download/rel_1.0.3/FacePalm_1.0.3.zip
+> Retrieved from https://github.com/swsch/FacePalm/releases/download/rel_1.0.4/FacePalm_1.0.4.zip
 
 
 ## Summary

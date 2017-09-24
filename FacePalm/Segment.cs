@@ -18,7 +18,7 @@ namespace FacePalm {
         }
         public new void DrawLine(Canvas canvas, double scale)
         {
-            if (!Visible) return;
+            if (!IsVisible) return;
             var pg = new PathGeometry();
             pg.AddGeometry(new LineGeometry(M1.Point, M2.Point));
             pg.Transform = new MatrixTransform(scale, 0, 0, scale, 0, 0);
