@@ -88,18 +88,6 @@ namespace FacePalm {
                 LoadPhoto(new Uri("splash.jpg", UriKind.Relative));
         }
 
-        private void Axes_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var sel = (Axis) AxesBox.SelectedItem;
-            sel.Visible = !sel.Visible;
-            RedrawLines(LineCanvas);
-        }
-
-        private void Segments_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            var sel = (Segment) SegmentsBox.SelectedItem;
-            sel.Visible = !sel.Visible;
-            RedrawSegments(SegmentCanvas);
-        }
-
         private void OpenImage_Click(object sender, RoutedEventArgs e) {
             var d = new OpenFileDialog {Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp"};
             var result = d.ShowDialog();
@@ -351,6 +339,18 @@ namespace FacePalm {
 
         private void Quit_Click(object sender, RoutedEventArgs e) {
             Close();
+        }
+
+        private void Axis_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (!((sender as FrameworkElement)?.DataContext is Axis axis)) return;
+            axis.Visible = !axis.Visible;
+            RedrawLines(LineCanvas);
+        }
+
+        private void Segment_MouseDown(object sender, MouseButtonEventArgs e) {
+            if (!((sender as FrameworkElement)?.DataContext is Segment segment)) return;
+            segment.Visible = !segment.Visible;
+            RedrawSegments(SegmentCanvas);
         }
     }
 }

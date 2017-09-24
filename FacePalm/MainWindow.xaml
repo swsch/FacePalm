@@ -95,10 +95,10 @@
                 </ListBox>
                 <TextBlock Grid.Row="2" Text="Segments:" Margin="0,4,0,0" />
                 <ListBox Grid.Row="3" ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}"
-                         Width="300" x:Name="SegmentsBox" SelectionChanged="Segments_SelectionChanged">
+                         Width="300" x:Name="SegmentsBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" MouseDown="Segment_MouseDown">
                                 <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Left" Margin="0,0,12,0"
                                            FontWeight="Bold" Background="{Binding Brush}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
@@ -108,10 +108,10 @@
                 </ListBox>
                 <TextBlock Grid.Row="4" Text="Lines:" Margin="0,4,0,0" />
                 <ListBox Grid.Row="5" ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}"
-                         Width="300" x:Name="AxesBox" SelectionChanged="Axes_SelectionChanged">
+                         Width="300" x:Name="AxesBox">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" MouseDown="Axis_MouseDown">
                                 <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Left" Margin="0,0,12,0"
                                            FontWeight="Bold" Background="{Binding Brush}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
