@@ -30,6 +30,7 @@ using System;
 // ReSharper disable IntroduceOptionalParameters.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable InconsistentNaming
+// ReSharper disable once CheckNamespace
 namespace FacePalm.Annotations {
     /// <summary>
     /// Indicates that the value of the marked element could be <c>null</c> sometimes,

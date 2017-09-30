@@ -23,6 +23,9 @@ namespace FacePalm {
         private double _dpiYCorrection;
         private double _scale = 1.0;
         private Session _session;
+        private bool _colorPhoto;
+        private BitmapImage _original;
+        private FormatConvertedBitmap _greyscale;
 
         public MainWindow() {
             InitializeComponent();
@@ -49,6 +52,17 @@ namespace FacePalm {
                 if (Equals(value, _currentMarker)) return;
                 _currentMarker = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public BitmapSource PhotoSource => ColorPhoto ? _original : (BitmapSource) _greyscale;
+
+        public bool ColorPhoto {
+            get { return _colorPhoto; }
+            set {
+                if (value == _colorPhoto) return;
+                _colorPhoto = value;
+                OnPropertyChanged(nameof(PhotoSource));
             }
         }
 
@@ -221,7 +235,7 @@ namespace FacePalm {
         }
 
         private void ZoomPhoto(double newScale, ImageSource image = null) {
-            if (image == null) image = Photo.Source;
+            if (image == null) image = _original;
             Photo.LayoutTransform = new ScaleTransform(newScale, newScale, 0, 0);
             Drawing.Width = Math.Max(image.Width * newScale, Viewer.ViewportWidth);
             Drawing.Height = Math.Max(image.Height * newScale, Viewer.ViewportHeight);
@@ -262,10 +276,16 @@ namespace FacePalm {
         }
 
         private void LoadPhoto(Uri uri) {
-            var image = new BitmapImage(uri).Clone();
-            Photo.Source = image;
-            DpiCorrection(image);
-            ResetZoom(image, Viewer.RenderSize);
+            _original = new BitmapImage(uri).Clone();
+            _greyscale = new FormatConvertedBitmap();
+            _greyscale.BeginInit();
+            _greyscale.Source = _original;
+            _greyscale.DestinationFormat = PixelFormats.Gray32Float;
+            _greyscale.EndInit();
+            ColorPhoto = true;
+            DpiCorrection(_original);
+            ResetZoom(_original, Viewer.RenderSize);
+            OnPropertyChanged(nameof(PhotoSource));
         }
 
         private void ResetZoom(ImageSource image, Size size) {
@@ -351,6 +371,10 @@ namespace FacePalm {
             if (!((sender as FrameworkElement)?.DataContext is Segment segment)) return;
             segment.IsVisible = !segment.IsVisible;
             RedrawSegments(SegmentCanvas);
+        }
+
+        private void Greyscale_Click(object sender, RoutedEventArgs e) {
+            ColorPhoto = !ColorPhoto;
         }
     }
 }

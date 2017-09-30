@@ -49,6 +49,8 @@
                 <MenuItem Header="Zoom to window" Click="ZoomNormal_Click" />
                 <MenuItem Header="Zoom in" Click="ZoomIn_Click" />
                 <Separator />
+                <MenuItem Header="Toggle Greyscale/Color Photo" Click="Greyscale_Click" />
+                <Separator />
                 <MenuItem Header="Hide all objects" Click="HideAll_Click" />
                 <MenuItem Header="Show all objects" Click="ShowAll_Click" />
                 <MenuItem Header="Show points" Click="ShowPoints_Click" />
@@ -146,7 +148,7 @@
                             <Setter Property="FontSize" Value="14" />
                         </Style>
                     </Canvas.Resources>
-                    <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown" />
+                    <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown" Source="{Binding PhotoSource, Mode=OneWay}"/>
                     <Canvas x:Name="LineCanvas" IsHitTestVisible="False" />
                     <Canvas x:Name="SegmentCanvas" IsHitTestVisible="False" />
                     <Canvas x:Name="PointCanvas" IsHitTestVisible="False" Clip="{Binding Clip, ElementName=Photo}" />

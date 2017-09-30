@@ -70,7 +70,7 @@ namespace FacePalm {
                     StrokeThickness = 2
                 });
             var label = new TextBlock {
-                Text = Id.ToString(),
+                Text = Id,
                 Foreground = Brush,
                 Background = BackgroundBrush,
                 Padding = Padding
