@@ -16,6 +16,7 @@ namespace FacePalm {
         private GeometryDefinition _geometryDefinition;
         private string _id = "";
         private string _imageFile = "";
+        private const double ScaleForSaving = 100.0;
 
         public Session() {
             SetupTempStorage();
@@ -144,11 +145,11 @@ namespace FacePalm {
             var newDefinitionsFile = Path.Combine(TempStorage, DefinitionsFileBasename);
             if (!ImageFile.Equals(newImageFile)) File.Copy(ImageFile, newImageFile);
             if (!DefinitionsFile.Equals(newDefinitionsFile)) File.Copy(DefinitionsFile, newDefinitionsFile);
-            SaveData();
+            SavePoints();
         }
 
-        private void SaveData() {
-            int S(double d) => (int) (d * 100.0);
+        private void SavePoints() {
+            int S(double d) => (int) (d * ScaleForSaving);
             using (var sw = new StreamWriter(Path.Combine(TempStorage, DataFile))) {
                 sw.WriteLine("TYPE;NAME OF POINT;X;Y");
                 foreach (var m in GeometryDefinition.Markers)
@@ -182,7 +183,7 @@ namespace FacePalm {
         }
 
         private void LoadPoints(string dataFile) {
-            double S(int d) => (int) (d / 100.0);
+            double S(int d) => d / ScaleForSaving;
             foreach (var line in File.ReadLines(Path.Combine(TempStorage, dataFile))
                                      .Where(l => l.StartsWith("point"))) {
                 var f = line.Split(';');

@@ -18,14 +18,14 @@ namespace FacePalm {
     public partial class MainWindow : INotifyPropertyChanged {
         private const double ZoomStep = 1.5;
         private double _baseScale = 1.0;
+        private bool _colorPhoto;
         private Marker _currentMarker;
         private double _dpiXCorrection;
         private double _dpiYCorrection;
+        private FormatConvertedBitmap _greyscale;
+        private BitmapImage _original;
         private double _scale = 1.0;
         private Session _session;
-        private bool _colorPhoto;
-        private BitmapImage _original;
-        private FormatConvertedBitmap _greyscale;
 
         public MainWindow() {
             InitializeComponent();
@@ -58,7 +58,7 @@ namespace FacePalm {
         public BitmapSource PhotoSource => ColorPhoto ? _original : (BitmapSource) _greyscale;
 
         public bool ColorPhoto {
-            get { return _colorPhoto; }
+            get => _colorPhoto;
             set {
                 if (value == _colorPhoto) return;
                 _colorPhoto = value;
@@ -302,6 +302,7 @@ namespace FacePalm {
 
         private void ExportResults(string filename) {
             int S(double d, double c = 1.0) => (int) (d * c * 100.0);
+
             var writeHeaders = !File.Exists(filename);
             try {
                 using (var sw = new StreamWriter(filename, true, Encoding.Default)) {
@@ -314,8 +315,7 @@ namespace FacePalm {
                         sw.WriteLine();
                     }
                     sw.Write(Session.Id);
-                    markers.ForEach(
-                        m => sw.Write($";{S(m.Point.X, _dpiXCorrection)};{S(m.Point.Y, _dpiYCorrection)}"));
+                    markers.ForEach(m => sw.Write($";{S(m.Point.X, _dpiXCorrection)};{S(m.Point.Y, _dpiYCorrection)}"));
                     segments.ForEach(s => sw.Write($";{S(s.Length(_dpiXCorrection, _dpiYCorrection))}"));
                     sw.WriteLine();
                 }
