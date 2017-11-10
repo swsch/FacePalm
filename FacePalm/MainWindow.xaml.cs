@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FacePalm.Annotations;
 using Microsoft.Win32;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace FacePalm {
     public partial class MainWindow : INotifyPropertyChanged {
@@ -108,9 +110,6 @@ namespace FacePalm {
             if (result != true) return;
             Session = new Session(Session.DefinitionsFile, d.FileName);
             LoadPhoto(new Uri(d.FileName, UriKind.Absolute));
-            RedrawSegments(SegmentCanvas);
-            RedrawLines(LineCanvas);
-            RedrawPoints(PointCanvas);
         }
 
         private void LoadDefinitions_Click(object sender, RoutedEventArgs e) {
@@ -141,9 +140,6 @@ namespace FacePalm {
                 } else {
                     Session = s;
                     LoadPhoto(new Uri(s.ImageFile, UriKind.Absolute));
-                    RedrawSegments(SegmentCanvas);
-                    RedrawLines(LineCanvas);
-                    RedrawPoints(PointCanvas);
                 }
             }
         }
@@ -265,14 +261,27 @@ namespace FacePalm {
                 segment.DrawLine(c, _scale);
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private void DpiCorrection(BitmapImage imageSource) {
-            var ps = PresentationSource.FromVisual(this);
-            var m = ps.CompositionTarget.TransformToDevice;
-            var dpiX = m.M11 * 96;
-            var dpiY = m.M22 * 96;
-            _dpiXCorrection = imageSource.DpiX / dpiX;
-            _dpiYCorrection = imageSource.DpiY / dpiY;
+            var ct = PresentationSource.FromVisual(this)?.CompositionTarget;
+            if (ct is null) {
+                _dpiXCorrection = 1;
+                _dpiYCorrection = 1;
+            } else {
+                var m = ct.TransformToDevice;
+                var g = Graphics.FromHwnd(IntPtr.Zero);
+                _dpiXCorrection = imageSource.DpiX / (g.DpiX / m.M11);
+                _dpiYCorrection = imageSource.DpiY / (g.DpiY / m.M22);
+#if DEBUG
+                using (var f = File.Open(
+                    $"{Environment.GetEnvironmentVariable("TEMP")}\\facepalm.log",
+                    FileMode.Append,
+                    FileAccess.Write)) {
+                    var s = new StreamWriter(f);
+                    s.WriteLine($"M11={m.M11}, M22={m.M22}, g.DpiX={g.DpiX}, g.DpiY={g.DpiY}");
+                    s.Close();
+                }
+#endif
+            }
         }
 
         private void LoadPhoto(Uri uri) {
@@ -301,7 +310,9 @@ namespace FacePalm {
 
 
         private void ExportResults(string filename) {
-            int S(double d, double c = 1.0) => (int) (d * c * 100.0);
+            int S(double d, double c = 1.0) {
+                return (int) (d * c * 100.0);
+            }
 
             var writeHeaders = !File.Exists(filename);
             try {
