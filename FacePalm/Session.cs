@@ -143,8 +143,8 @@ namespace FacePalm {
             SaveContents();
             var newImageFile = Path.Combine(TempStorage, ImageFileBasename);
             var newDefinitionsFile = Path.Combine(TempStorage, DefinitionsFileBasename);
-            if (!ImageFile.Equals(newImageFile)) File.Copy(ImageFile, newImageFile);
-            if (!DefinitionsFile.Equals(newDefinitionsFile)) File.Copy(DefinitionsFile, newDefinitionsFile);
+            if (!ImageFile.Equals(newImageFile)) File.Copy(ImageFile, newImageFile, true);
+            if (!DefinitionsFile.Equals(newDefinitionsFile)) File.Copy(DefinitionsFile, newDefinitionsFile, true);
             SavePoints();
         }
 
