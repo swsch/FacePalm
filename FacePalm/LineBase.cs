@@ -5,27 +5,12 @@ using System.Windows.Media;
 using FacePalm.Annotations;
 
 namespace FacePalm {
-    public abstract class LineBase : INotifyPropertyChanged {
+    public abstract class LineBase : IGeometryObject,
+                                     INotifyPropertyChanged {
+        private string _description;
+        private bool   _isVisible = true;
         private Marker _m1;
         private Marker _m2;
-        private string _description;
-        private bool _isVisible = true;
-
-        public string Id { get; set; }
-
-        public string Description {
-            get => $"{_description} {Markers}";
-            set => _description = value;
-        }
-
-        public bool IsVisible {
-            get => _isVisible;
-            set {
-                if (value == _isVisible) return;
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
 
         public Marker M1 {
             get => _m1;
@@ -45,9 +30,25 @@ namespace FacePalm {
 
         public string Markers => $"({M1.Id}/{M2.Id})";
 
+        public Brush BackgroundBrush => IsDefined ? MarkerBrush.Background : MarkerBrush.Transparent;
+
         public bool IsDefined => M1.IsDefined && M2.IsDefined;
 
-        public Brush BackgroundBrush => IsDefined ? MarkerBrush.Background : MarkerBrush.Transparent;
+        public string Id { get; set; }
+
+        public string Description {
+            get => $"{_description} {Markers}";
+            set => _description = value;
+        }
+
+        public bool IsVisible {
+            get => _isVisible;
+            set {
+                if (value == _isVisible) return;
+                _isVisible = value;
+                OnPropertyChanged();
+            }
+        }
 
         public virtual event PropertyChangedEventHandler PropertyChanged;
 
@@ -60,7 +61,6 @@ namespace FacePalm {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void DrawLine(Canvas canvas, double scale) {
-        }
+        public void DrawLine(Canvas canvas, double scale) { }
     }
 }

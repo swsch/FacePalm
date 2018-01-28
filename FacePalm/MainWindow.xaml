@@ -89,20 +89,12 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Grid HorizontalAlignment="Left" Margin="0,0,6,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Points:" Margin="0,4,0,0" />
-                <ListBox Grid.Row="1" SelectedItem="{Binding CurrentMarker, Mode=TwoWay}"
-                         Width="300"
-                         ItemsSource="{Binding Session.GeometryDefinition.Markers, Mode=OneWay}">
-                    <ListBox.ItemTemplate>
+            <TreeView DockPanel.Dock="Left"
+                      HorizontalAlignment="Stretch"
+                      MinWidth="200">
+                <TreeViewItem Header="Points"
+                              ItemsSource="{Binding Session.GeometryDefinition.Markers, Mode=OneWay}">
+                    <TreeViewItem.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Right"
@@ -111,33 +103,37 @@
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <TextBlock Grid.Row="2" Text="Segments:" Margin="0,4,0,0" />
-                <ListBox Grid.Row="3" ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}"
-                         Width="300" x:Name="SegmentsBox">
-                    <ListBox.ItemTemplate>
+                    </TreeViewItem.ItemTemplate>
+                </TreeViewItem>
+                <TreeViewItem Header="Segments"
+                              ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}">
+                    <TreeViewItem.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" MouseDown="Segment_MouseDown" MinWidth="280">
                                 <TextBlock Text="{Binding Id}" Style="{StaticResource Opaque}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <TextBlock Grid.Row="4" Text="Lines:" Margin="0,4,0,0" />
-                <ListBox Grid.Row="5" ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}"
-                         Width="300" x:Name="AxesBox">
-                    <ListBox.ItemTemplate>
+                    </TreeViewItem.ItemTemplate>
+                </TreeViewItem>
+                <TreeViewItem Header="Lines"
+                              ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}">
+                    <TreeViewItem.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" MouseDown="Axis_MouseDown" MinWidth="280">
                                 <TextBlock Text="{Binding Id}" Style="{StaticResource Opaque}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
+                    </TreeViewItem.ItemTemplate>
+                </TreeViewItem>
+                <TreeViewItem Header="Polylines" />
+                <TreeViewItem Header="Areas" />
+            </TreeView>
+<GridSplitter Grid.Column="0"
+              HorizontalAlignment="Right"
+              Width="5"
+              Background="Beige"/>
             <ScrollViewer Grid.Column="1" x:Name="Viewer" HorizontalScrollBarVisibility="Visible"
                           VerticalScrollBarVisibility="Visible" CanContentScroll="False"
                           SizeChanged="Viewer_SizeChanged">
@@ -148,7 +144,8 @@
                             <Setter Property="FontSize" Value="14" />
                         </Style>
                     </Canvas.Resources>
-                    <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown" Source="{Binding PhotoSource, Mode=OneWay}"/>
+                    <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown"
+                           Source="{Binding PhotoSource, Mode=OneWay}" />
                     <Canvas x:Name="LineCanvas" IsHitTestVisible="False" />
                     <Canvas x:Name="SegmentCanvas" IsHitTestVisible="False" />
                     <Canvas x:Name="PointCanvas" IsHitTestVisible="False" Clip="{Binding Clip, ElementName=Photo}" />

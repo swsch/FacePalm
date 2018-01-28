@@ -7,15 +7,12 @@ using System.Windows.Shapes;
 using FacePalm.Annotations;
 
 namespace FacePalm {
-    public sealed class Marker : INotifyPropertyChanged {
+    public sealed class Marker : IGeometryObject,
+                                 INotifyPropertyChanged {
         private static readonly Thickness Padding = new Thickness(4, 0, 4, 1);
+        private                 bool      _isDefined;
 
         private Point _point;
-        private bool _isDefined;
-
-        public string Id { get; set; }
-
-        public string Description { get; set; }
 
         public Point Point {
             get => _point;
@@ -26,6 +23,16 @@ namespace FacePalm {
             }
         }
 
+        public Brush Brush => IsDefined ? MarkerBrush.Marker : MarkerBrush.Transparent;
+
+        public Brush BackgroundBrush => IsDefined ? MarkerBrush.Background : MarkerBrush.Transparent;
+
+        public string Id { get; set; }
+
+        public string Description { get; set; }
+
+        public bool IsVisible { get; set; }
+
         public bool IsDefined {
             get => _isDefined;
             private set {
@@ -35,10 +42,6 @@ namespace FacePalm {
                 OnPropertyChanged(nameof(BackgroundBrush));
             }
         }
-
-        public Brush Brush => IsDefined ? MarkerBrush.Marker : MarkerBrush.Transparent;
-
-        public Brush BackgroundBrush => IsDefined ? MarkerBrush.Background : MarkerBrush.Transparent;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

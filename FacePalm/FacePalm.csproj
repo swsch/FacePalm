@@ -70,6 +70,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IGeometryObject.cs" />
     <Compile Include="LineBase.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Segment.cs" />
