@@ -127,8 +127,8 @@
                         </DataTemplate>
                     </TreeViewItem.ItemTemplate>
                 </TreeViewItem>
-                <TreeViewItem Header="Polylines" />
-                <TreeViewItem Header="Areas" />
+                <TreeViewItem Header="Polylines" IsEnabled="False"/>
+                <TreeViewItem Header="Areas" IsEnabled="False"/>
             </TreeView>
 <GridSplitter Grid.Column="0"
               HorizontalAlignment="Right"
