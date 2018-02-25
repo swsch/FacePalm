@@ -18,16 +18,16 @@ using Size = System.Windows.Size;
 
 namespace FacePalm {
     public partial class MainWindow : INotifyPropertyChanged {
-        private const double ZoomStep = 1.5;
-        private double _baseScale = 1.0;
-        private bool _colorPhoto;
-        private Marker _currentMarker;
-        private double _dpiXCorrection;
-        private double _dpiYCorrection;
-        private FormatConvertedBitmap _greyscale;
-        private BitmapImage _original;
-        private double _scale = 1.0;
-        private Session _session;
+        private const double                ZoomStep   = 1.25;
+        private       double                _baseScale = 1.0;
+        private       bool                  _colorPhoto;
+        private       Marker                _currentMarker;
+        private       double                _dpiXCorrection;
+        private       double                _dpiYCorrection;
+        private       FormatConvertedBitmap _greyscale;
+        private       BitmapImage           _original;
+        private       double                _scale = 1.0;
+        private       Session               _session;
 
         public MainWindow() {
             InitializeComponent();
@@ -90,11 +90,10 @@ namespace FacePalm {
             ZoomPhoto(Math.Max(_baseScale, _scale / ZoomStep));
         }
 
-        private void Image_MouseDown(object sender, MouseButtonEventArgs e) {
+        private void Photo_MouseDown(object sender, MouseButtonEventArgs e) {
             var clickPosition = e.MouseDevice.GetPosition(Photo);
             if (CurrentMarker == null) return;
             Session.GeometryDefinition.SetPoint(CurrentMarker, new Point(clickPosition.X, clickPosition.Y));
-            CurrentMarker = null;
             e.Handled = true;
             RedrawPoints(PointCanvas);
         }
@@ -145,7 +144,6 @@ namespace FacePalm {
                             if (cea.PropertyName.Equals("IsVisible")) RedrawPoints(PointCanvas);
                         };
                     }
-
                 }
             }
         }
@@ -163,6 +161,7 @@ namespace FacePalm {
                 Mbs("Missing definitions or image file.");
                 return;
             }
+
             var sd = new SaveFileDialog {
                 Title = "Save session as ...",
                 AddExtension = true,
@@ -181,12 +180,14 @@ namespace FacePalm {
                 Mbs($"Cannot create temporary directory {Session.TempStorage}.");
                 return;
             }
+
             try {
                 Session.CreateContents();
             } catch (Exception) {
                 Mbs($"Cannot copy session data to temporary directory {Session.TempStorage}");
                 return;
             }
+
             try {
                 Session.CreateArchive(archiveName);
             } catch (Exception) {
@@ -216,6 +217,7 @@ namespace FacePalm {
             using (var dc = dv.RenderOpen()) {
                 dc.DrawRectangle(new VisualBrush(Drawing), null, dr);
             }
+
             var rt = new RenderTargetBitmap((int) w, (int) h, 96, 96, PixelFormats.Default);
             rt.Render(dv);
             var be = new JpegBitmapEncoder {QualityLevel = 95};
@@ -230,10 +232,11 @@ namespace FacePalm {
                 OverwritePrompt = true
             };
             var result = d.ShowDialog();
-            if (result == true)
+            if (result == true) {
                 using (var s = File.OpenWrite(d.FileName)) {
                     be.Save(s);
                 }
+            }
         }
 
         private void ZoomPhoto(double newScale, ImageSource image = null) {
@@ -316,9 +319,7 @@ namespace FacePalm {
 
 
         private void ExportResults(string filename) {
-            int S(double d, double c = 1.0) {
-                return (int) (d * c * 100.0);
-            }
+            int S(double d, double c = 1.0) => (int) (d * c * 100.0);
 
             var writeHeaders = !File.Exists(filename);
             try {
@@ -331,6 +332,7 @@ namespace FacePalm {
                         segments.ForEach(s => sw.Write($";{s.Id}"));
                         sw.WriteLine();
                     }
+
                     sw.Write(Session.Id);
                     markers.ForEach(m => sw.Write($";{S(m.Point.X, _dpiXCorrection)};{S(m.Point.Y, _dpiYCorrection)}"));
                     segments.ForEach(s => sw.Write($";{S(s.Length(_dpiXCorrection, _dpiYCorrection))}"));
@@ -402,6 +404,16 @@ namespace FacePalm {
         private void IncreaseMarkerSize_OnClick(object sender, RoutedEventArgs e) {
             Marker.MarkerSize /= 0.8;
             RedrawPoints(PointCanvas);
+        }
+
+        private void Tree_ItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+            if (e.NewValue is Marker m)
+            {
+                CurrentMarker = m;
+                return;
+            }
+
+            CurrentMarker = null;
         }
     }
 }

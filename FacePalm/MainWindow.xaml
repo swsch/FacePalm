@@ -93,6 +93,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TreeView DockPanel.Dock="Left"
+                      SelectedItemChanged="Tree_ItemChanged"
                       HorizontalAlignment="Stretch"
                       MinWidth="200">
                 <TreeViewItem Header="Points"
@@ -103,7 +104,7 @@
                                 <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Right"
                                            Margin="0,0,12,0"
                                            FontWeight="Bold" Background="{Binding Brush}" />
-                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" />
+                                <CheckBox IsTabStop="False" IsChecked="{Binding IsVisible,Mode=TwoWay}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
@@ -150,7 +151,7 @@
                             <Setter Property="FontSize" Value="14" />
                         </Style>
                     </Canvas.Resources>
-                    <Image x:Name="Photo" Stretch="None" MouseDown="Image_MouseDown"
+                    <Image x:Name="Photo" Stretch="None" MouseDown="Photo_MouseDown"
                            Source="{Binding PhotoSource, Mode=OneWay}" />
                     <Canvas x:Name="LineCanvas" IsHitTestVisible="False" />
                     <Canvas x:Name="SegmentCanvas" IsHitTestVisible="False" />
