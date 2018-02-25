@@ -140,6 +140,12 @@ namespace FacePalm {
                 } else {
                     Session = s;
                     LoadPhoto(new Uri(s.ImageFile, UriKind.Absolute));
+                    foreach (var m in s.GeometryDefinition.Markers) {
+                        m.PropertyChanged += (src, cea) => {
+                            if (cea.PropertyName.Equals("IsVisible")) RedrawPoints(PointCanvas);
+                        };
+                    }
+
                 }
             }
         }
@@ -245,19 +251,19 @@ namespace FacePalm {
 
         private void RedrawLines(Canvas c) {
             c.Children.Clear();
-            foreach (var line in Session.GeometryDefinition.Axes.Where(l => l.IsDefined))
+            foreach (var line in Session.GeometryDefinition.Axes.Where(l => l.IsDefined && l.IsVisible))
                 line.DrawLine(c, _scale);
         }
 
         private void RedrawPoints(Canvas c) {
             c.Children.Clear();
-            foreach (var marker in Session.GeometryDefinition.Markers.Where(m => m.IsDefined))
+            foreach (var marker in Session.GeometryDefinition.Markers.Where(m => m.IsDefined && m.IsVisible))
                 marker.DrawPoint(c, _scale);
         }
 
         private void RedrawSegments(Canvas c) {
             c.Children.Clear();
-            foreach (var segment in Session.GeometryDefinition.Segments.Where(s => s.IsDefined))
+            foreach (var segment in Session.GeometryDefinition.Segments.Where(s => s.IsDefined && s.IsVisible))
                 segment.DrawLine(c, _scale);
         }
 
@@ -386,6 +392,16 @@ namespace FacePalm {
 
         private void Greyscale_Click(object sender, RoutedEventArgs e) {
             ColorPhoto = !ColorPhoto;
+        }
+
+        private void ReduceMarkerSize_OnClick(object sender, RoutedEventArgs e) {
+            Marker.MarkerSize *= 0.8;
+            RedrawPoints(PointCanvas);
+        }
+
+        private void IncreaseMarkerSize_OnClick(object sender, RoutedEventArgs e) {
+            Marker.MarkerSize /= 0.8;
+            RedrawPoints(PointCanvas);
         }
     }
 }

@@ -11,8 +11,10 @@ namespace FacePalm {
                                  INotifyPropertyChanged {
         private static readonly Thickness Padding = new Thickness(4, 0, 4, 1);
         private                 bool      _isDefined;
+        public static double MarkerSize = 8;
 
         private Point _point;
+        private bool _isVisible;
 
         public Point Point {
             get => _point;
@@ -31,12 +33,21 @@ namespace FacePalm {
 
         public string Description { get; set; }
 
-        public bool IsVisible { get; set; }
+        public bool IsVisible {
+            get => _isVisible;
+            set {
+                if (value == _isVisible) return;
+                _isVisible = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsDefined {
             get => _isDefined;
             private set {
+                if (value == _isDefined) return;
                 _isDefined = value;
+                IsVisible = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(Brush));
                 OnPropertyChanged(nameof(BackgroundBrush));
@@ -49,14 +60,14 @@ namespace FacePalm {
         public void DrawPoint(Canvas canvas, double scale) {
             var pg = new PathGeometry();
             var top = Point;
-            top.Offset(0, -8);
+            top.Offset(0, -MarkerSize);
             var bottom = Point;
-            bottom.Offset(0, 8);
+            bottom.Offset(0, MarkerSize);
             pg.AddGeometry(new LineGeometry(top, bottom));
             var left = Point;
-            left.Offset(-8, 0);
+            left.Offset(-MarkerSize, 0);
             var right = Point;
-            right.Offset(8, 0);
+            right.Offset(MarkerSize, 0);
             pg.AddGeometry(new LineGeometry(left, right));
             pg.Transform = new MatrixTransform(scale, 0, 0, scale, 0, 0);
             canvas.Children.Add(

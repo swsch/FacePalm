@@ -56,6 +56,9 @@
                 <MenuItem Header="Show points" Click="ShowPoints_Click" />
                 <MenuItem Header="Show lines" Click="ShowLines_Click" />
                 <MenuItem Header="Show segments" Click="ShowSegments_Click" />
+                <Separator />
+                <MenuItem Header="Reduce Marker Size" Click="ReduceMarkerSize_OnClick"/>
+                <MenuItem Header="Increase Marker Size" Click="IncreaseMarkerSize_OnClick"/>
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom" DataContext="{Binding Session, Mode=OneWay}">
@@ -100,6 +103,7 @@
                                 <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Right"
                                            Margin="0,0,12,0"
                                            FontWeight="Bold" Background="{Binding Brush}" />
+                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
@@ -111,6 +115,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" MouseDown="Segment_MouseDown" MinWidth="280">
                                 <TextBlock Text="{Binding Id}" Style="{StaticResource Opaque}" />
+                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
@@ -122,6 +127,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" MouseDown="Axis_MouseDown" MinWidth="280">
                                 <TextBlock Text="{Binding Id}" Style="{StaticResource Opaque}" />
+                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
