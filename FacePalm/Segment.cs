@@ -17,7 +17,7 @@ namespace FacePalm {
             return Math.Sqrt(dx * dx + dy * dy);
         }
 
-        public new void DrawLine(Canvas canvas, double scale) {
+        public override void Draw(Canvas canvas, double scale) {
             if (!IsVisible) return;
             var pg = new PathGeometry();
             pg.AddGeometry(new LineGeometry(M1.Point, M2.Point));
@@ -27,7 +27,7 @@ namespace FacePalm {
                     Data = pg,
                     Stroke = Brush
                 });
-            var label = new TextBlock {Text = Id, Foreground = Brush, Background = BackgroundBrush, Padding = Padding};
+            var label = new TextBlock {Text = Id, Foreground = Brush, Background = Background, Padding = Padding};
             Canvas.SetTop(label, (M1.Point.Y + M2.Point.Y) / 2 * scale);
             Canvas.SetLeft(label, (M1.Point.X + M2.Point.X) / 2 * scale);
             canvas.Children.Add(label);

@@ -10,7 +10,7 @@ namespace FacePalm {
 
         public Brush Brush => IsDefined ? MarkerBrush.Axis : MarkerBrush.Transparent;
 
-        public new void DrawLine(Canvas canvas, double scale) {
+        public override void Draw(Canvas canvas, double scale) {
             if (!IsVisible) return;
             var pg = new PathGeometry();
             var dy = M1.Point.Y - M2.Point.Y;
@@ -27,7 +27,7 @@ namespace FacePalm {
                     Data = pg,
                     Stroke = Brush
                 });
-            var label = new TextBlock {Text = Id, Foreground = Brush, Background = BackgroundBrush, Padding = Padding};
+            var label = new TextBlock {Text = Id, Foreground = Brush, Background = Background, Padding = Padding};
             Canvas.SetTop(label, (M1.Point.Y + 48 * dy / d) * scale);
             Canvas.SetLeft(label, (M1.Point.X + 48 * dx / d) * scale);
             canvas.Children.Add(label);

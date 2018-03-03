@@ -255,19 +255,19 @@ namespace FacePalm {
         private void RedrawLines(Canvas c) {
             c.Children.Clear();
             foreach (var line in Session.GeometryDefinition.Axes.Where(l => l.IsDefined && l.IsVisible))
-                line.DrawLine(c, _scale);
+                line.Draw(c, _scale);
         }
 
         private void RedrawPoints(Canvas c) {
             c.Children.Clear();
             foreach (var marker in Session.GeometryDefinition.Markers.Where(m => m.IsDefined && m.IsVisible))
-                marker.DrawPoint(c, _scale);
+                marker.Draw(c, _scale);
         }
 
         private void RedrawSegments(Canvas c) {
             c.Children.Clear();
             foreach (var segment in Session.GeometryDefinition.Segments.Where(s => s.IsDefined && s.IsVisible))
-                segment.DrawLine(c, _scale);
+                segment.Draw(c, _scale);
         }
 
         private void DpiCorrection(BitmapImage imageSource) {

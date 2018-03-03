@@ -15,29 +15,35 @@ namespace FacePalm {
         public Marker M1 {
             get => _m1;
             set {
+                if (Equals(value, _m1)) return;
                 _m1 = value;
-                M1.PropertyChanged += MarkerPropertyChanged;
+                MarkerChanged(_m1);
+                OnPropertyChanged();
             }
         }
 
         public Marker M2 {
             get => _m2;
             set {
+                if (Equals(value, _m2)) return;
                 _m2 = value;
-                M2.PropertyChanged += MarkerPropertyChanged;
+                MarkerChanged(_m2);
+                OnPropertyChanged();
             }
         }
 
-        public string Markers => $"({M1.Id}/{M2.Id})";
+        public Brush Background { get; protected set; } = MarkerBrush.Transparent;
 
-        public Brush BackgroundBrush => IsDefined ? MarkerBrush.Background : MarkerBrush.Transparent;
+        public Brush Foreground { get; protected set; } = MarkerBrush.Transparent;
 
-        public bool IsDefined => M1.IsDefined && M2.IsDefined;
+        public abstract void Draw(Canvas canvas, double scale);
+
+        public bool IsDefined { get; private set; }
 
         public string Id { get; set; }
 
         public string Description {
-            get => $"{_description} {Markers}";
+            get => $"{_description} {this}";
             set => _description = value;
         }
 
@@ -52,7 +58,15 @@ namespace FacePalm {
 
         public virtual event PropertyChangedEventHandler PropertyChanged;
 
+        private void MarkerChanged(Marker m) {
+            m.PropertyChanged += MarkerPropertyChanged;
+        }
+
+        public override string ToString() => $"({M1.Id}/{M2.Id})";
+
         private void MarkerPropertyChanged(object sender, PropertyChangedEventArgs e) {
+            IsDefined = _m1.IsDefined && _m2.IsDefined;
+            Background = IsDefined && _isVisible ? MarkerBrush.Background : MarkerBrush.Transparent;
             OnPropertyChanged(e.PropertyName);
         }
 
@@ -60,7 +74,5 @@ namespace FacePalm {
         private void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public void DrawLine(Canvas canvas, double scale) { }
     }
 }

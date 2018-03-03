@@ -103,7 +103,7 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Id}" MinWidth="24" TextAlignment="Right"
                                            Margin="0,0,12,0"
-                                           FontWeight="Bold" Background="{Binding Brush}" />
+                                           FontWeight="Bold" Background="{Binding Foreground}" />
                                 <CheckBox IsTabStop="False" IsChecked="{Binding IsVisible,Mode=TwoWay}" />
                                 <TextBlock Text="{Binding Description}" Width="Auto" />
                             </StackPanel>

@@ -9,25 +9,51 @@ using FacePalm.Annotations;
 namespace FacePalm {
     public sealed class Marker : IGeometryObject,
                                  INotifyPropertyChanged {
-        private static readonly Thickness Padding = new Thickness(4, 0, 4, 1);
-        private                 bool      _isDefined;
-        public static double MarkerSize = 8;
+        private static readonly PathGeometry MarkerGeometry;
+        private static readonly Thickness    Padding;
+        public static           double       MarkerSize;
 
+        private Brush _background;
+        private Brush _foreground;
+        private bool  _isDefined;
+        private bool  _isVisible = true;
         private Point _point;
-        private bool _isVisible;
+
+        static Marker() {
+            MarkerGeometry = MarkerPathGeometry();
+            Padding = new Thickness(4, 0, 4, 1);
+            MarkerSize = 8;
+        }
 
         public Point Point {
             get => _point;
             set {
+                if (Equals(value, _point)) return;
                 _point = value;
                 IsDefined = true;
+                Foreground = IsDefined ? MarkerBrush.Marker : MarkerBrush.Transparent;
+                Background = IsDefined ? MarkerBrush.Background : MarkerBrush.Transparent;
                 OnPropertyChanged();
             }
         }
 
-        public Brush Brush => IsDefined ? MarkerBrush.Marker : MarkerBrush.Transparent;
+        public Brush Background {
+            get => _background;
+            private set {
+                if (Equals(value, _background)) return;
+                _background = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public Brush BackgroundBrush => IsDefined ? MarkerBrush.Background : MarkerBrush.Transparent;
+        public Brush Foreground {
+            get => _foreground;
+            private set {
+                if (Equals(value, _foreground)) return;
+                _foreground = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Id { get; set; }
 
@@ -47,51 +73,52 @@ namespace FacePalm {
             private set {
                 if (value == _isDefined) return;
                 _isDefined = value;
-                IsVisible = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(Brush));
-                OnPropertyChanged(nameof(BackgroundBrush));
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        public void DrawPoint(Canvas canvas, double scale) {
-            var pg = new PathGeometry();
-            var top = Point;
-            top.Offset(0, -MarkerSize);
-            var bottom = Point;
-            bottom.Offset(0, MarkerSize);
-            pg.AddGeometry(new LineGeometry(top, bottom));
-            var left = Point;
-            left.Offset(-MarkerSize, 0);
-            var right = Point;
-            right.Offset(MarkerSize, 0);
-            pg.AddGeometry(new LineGeometry(left, right));
-            pg.Transform = new MatrixTransform(scale, 0, 0, scale, 0, 0);
+        public void Draw(Canvas canvas, double scale) {
+            var rtMarker = new MatrixTransform(MarkerSize, 0, 0, MarkerSize, Point.X * scale, Point.Y * scale);
             canvas.Children.Add(
                 new Path {
-                    Data = pg,
+                    Data = MarkerGeometry,
                     Stroke = MarkerBrush.Background,
-                    StrokeThickness = 4
+                    StrokeThickness = 4/MarkerSize,
+                    RenderTransform = rtMarker
                 }
             );
             canvas.Children.Add(
                 new Path {
-                    Data = pg,
-                    Stroke = Brush,
-                    StrokeThickness = 2
+                    Data = MarkerGeometry,
+                    Stroke = Foreground,
+                    StrokeThickness = 2/MarkerSize,
+                    RenderTransform = rtMarker
                 });
             var label = new TextBlock {
                 Text = Id,
-                Foreground = Brush,
-                Background = BackgroundBrush,
-                Padding = Padding
+                Foreground = Foreground,
+                Background = Background,
+                Padding = Padding,
+                RenderTransform = new MatrixTransform(
+                    scale,
+                    0,
+                    0,
+                    scale,
+                    (Point.X + 0.5 * MarkerSize) * scale,
+                    (Point.Y + 0.5 * MarkerSize) * scale)
             };
-            Canvas.SetTop(label, right.Y * scale);
-            Canvas.SetLeft(label, right.X * scale);
             canvas.Children.Add(label);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private static PathGeometry MarkerPathGeometry() {
+            var vl = new LineGeometry(new Point(0, -1), new Point(0, 1));
+            var hl = new LineGeometry(new Point(-1, 0), new Point(1, 0));
+            var pg = new PathGeometry();
+            pg.AddGeometry(vl);
+            pg.AddGeometry(hl);
+            return pg;
         }
 
         [NotifyPropertyChangedInvocator]
