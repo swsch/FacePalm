@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Xml.Schema;
 using FacePalm.Annotations;
 
 namespace FacePalm.ViewModel {
