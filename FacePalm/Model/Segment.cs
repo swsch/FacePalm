@@ -31,6 +31,10 @@ namespace FacePalm.Model {
 
         public string Description { get; private set; }
 
+        public override string ToString() => $"{Id} [{P1.Id},{P2.Id}] = {Length:F2}";
+
+        public static Segment ById(string id) => Index.ById(id);
+
         private void SetUp(string id, string p1, string p2, string description) {
             Id = id;
             P1 = Point.ById(p1);
@@ -38,9 +42,5 @@ namespace FacePalm.Model {
             Description = description;
             Index.Register(this);
         }
-
-        public override string ToString() => $"{Id} [{P1.Id},{P2.Id}] = {Length:F2}";
-
-        public static Segment ById(string id) => Index.ById(id);
     }
 }

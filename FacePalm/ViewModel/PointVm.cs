@@ -9,7 +9,9 @@ using Point = FacePalm.Model.Point;
 
 namespace FacePalm.ViewModel {
     public class PointVm : INotifyPropertyChanged {
-        public delegate void RedrawHandler(PointVm p);
+        public delegate void PointChangedHandler(PointVm p);
+
+        public event PointChangedHandler RedrawRequired;
 
         private bool       _isVisible;
         private Visibility _visibility = Visibility.Hidden;
@@ -17,11 +19,7 @@ namespace FacePalm.ViewModel {
         public PointVm(Point point) {
             Point = point;
             Marker = Glyph.Cross(point.Id);
-            point.Defined += delegate(Point p) {
-                IsVisible = p.IsDefined;
-                RedrawRequired?.Invoke(this);
-                OnPropertyChanged(nameof(IsDefined));
-            };
+            point.Defined += OnPointOnDefined;
         }
 
         public static double MarkerSize { get; set; } = 8.0;
@@ -47,6 +45,7 @@ namespace FacePalm.ViewModel {
                 if (value == _visibility) return;
                 _visibility = value;
                 Marker.Visibility = value;
+                RedrawRequired?.Invoke(this);
                 OnPropertyChanged();
             }
         }
@@ -55,16 +54,9 @@ namespace FacePalm.ViewModel {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public event RedrawHandler RedrawRequired;
-
-        public void OnCanvas(CanvasVm c) => c.Add(this);
+        public void AddToCanvas(CanvasVm c) => c.Add(this);
 
         public void Rescale(double scale) => Marker.Show(Point.X, Point.Y, scale, MarkerSize);
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public class Glyph {
             private static readonly PathGeometry CrossPathGeometry = new PathGeometry();
@@ -112,9 +104,20 @@ namespace FacePalm.ViewModel {
                     0,
                     0,
                     1,
-                    (x + 0.5 * size) * scale,
-                    (y + 0.5 * size) * scale);
+                    (x + 0.25 * size) * scale,
+                    (y + 0.25 * size) * scale);
             }
+        }
+
+        private void OnPointOnDefined(Point p) {
+            IsVisible = p.IsDefined;
+            RedrawRequired?.Invoke(this);
+            OnPropertyChanged(nameof(IsDefined));
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -45,7 +45,7 @@ namespace FacePalm {
             _points = lines.Where(l => l.StartsWith("point")).Select(l => new Point(l))
                               .Select(p => new PointVm(p)).ToList();
             foreach (var p in _points) {
-                p.OnCanvas(_markings);
+                p.AddToCanvas(_markings);
             }
         }
 
@@ -414,11 +414,13 @@ namespace FacePalm {
 
         private void ReduceMarkerSize_OnClick(object sender, RoutedEventArgs e) {
             Marker.MarkerSize *= 0.8;
+            _markings.MarkerSize *= 0.75;
             RedrawPoints(PointCanvas);
         }
 
         private void IncreaseMarkerSize_OnClick(object sender, RoutedEventArgs e) {
             Marker.MarkerSize /= 0.8;
+            _markings.MarkerSize /= 0.75;
             RedrawPoints(PointCanvas);
         }
 

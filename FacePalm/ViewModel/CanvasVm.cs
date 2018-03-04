@@ -4,9 +4,19 @@ namespace FacePalm.ViewModel {
     public class CanvasVm {
         public delegate void ScaleChangedHandler(CanvasVm c);
 
+        public event ScaleChangedHandler ScaleChanged;
+
         private double _scale = 1.0;
 
         public CanvasVm(Canvas c) => Canvas = c;
+
+        public double MarkerSize {
+            get => PointVm.MarkerSize;
+            set {
+                PointVm.MarkerSize = value;
+                ScaleChanged?.Invoke(this);
+            }
+        }
 
         public Canvas Canvas { get; }
 
@@ -22,8 +32,6 @@ namespace FacePalm.ViewModel {
         public void ZoomIn() => _scale += 0.125;
 
         public void ZoomOut() => _scale -= 0.125;
-
-        public event ScaleChangedHandler ScaleChanged;
 
         public void Add(PointVm p) {
             Canvas.Children.Add(p.Marker.Path);
