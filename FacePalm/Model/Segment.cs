@@ -59,6 +59,7 @@ namespace FacePalm.Model {
 
         private void OnPointDefined(Point p) {
             IsDefined = P1.IsDefined && P2.IsDefined;
+            if (IsDefined) Defined?.Invoke(this);
         }
     }
 }

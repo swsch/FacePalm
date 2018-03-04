@@ -124,13 +124,14 @@
                     </TreeViewItem.ItemTemplate>
                 </TreeViewItem>
                 <TreeViewItem Header="Segments"
-                              ItemsSource="{Binding Session.GeometryDefinition.Segments, Mode=OneWay}">
+                              ItemsSource="{Binding Segments, Mode=OneWay}">
                     <TreeViewItem.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" MouseDown="Segment_MouseDown" MinWidth="280">
-                                <TextBlock Text="{Binding Id}" Style="{StaticResource Opaque}" />
-                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" />
-                                <TextBlock Text="{Binding Description}" Width="Auto" />
+                                <Border Background="LimeGreen" Width="6" Height="6" Margin="0,0,6,0" Style="{StaticResource Definable}" />
+                                <TextBlock Text="{Binding Segment.Id}" Style="{StaticResource Opaque}" />
+                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" Margin="0,0,6,0"/>
+                                <TextBlock Text="{Binding Segment.Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
                     </TreeViewItem.ItemTemplate>

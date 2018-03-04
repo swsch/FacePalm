@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace FacePalm.ViewModel {
     public class CanvasVm {
@@ -43,6 +44,18 @@ namespace FacePalm.ViewModel {
         public void ShowPoint(PointVm p) {
             if (!p.IsVisible) return;
             p.Rescale(Scale);
+        }
+
+        public void Add(SegmentVm s) {
+            Canvas.Children.Add(s.Marker.Path);
+            Canvas.Children.Add(s.Marker.Label);
+            s.RedrawRequired += ShowSegment;
+            ScaleChanged += c => c.ShowSegment(s);
+        }
+
+        public void ShowSegment(SegmentVm s) {
+            if (!s.IsVisible) return;
+            s.Rescale(Scale);
         }
     }
 }

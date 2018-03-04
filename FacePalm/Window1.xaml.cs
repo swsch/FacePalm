@@ -45,6 +45,10 @@ namespace FacePalm {
                           .Select(l => new PointVm(new Point(l)))
                           .ToList();
             foreach (var p in Points) p.AddToCanvas(_markings);
+            Segments = lines.Where(l => l.StartsWith("segment"))
+                            .Select(l => new SegmentVm(new Model.Segment(l)))
+                            .ToList();
+            foreach (var s in Segments) s.AddToCanvas(_markings);
         }
 
         public Session Session {
@@ -80,6 +84,7 @@ namespace FacePalm {
         }
 
         public List<PointVm> Points { get; }
+        public List<SegmentVm> Segments { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

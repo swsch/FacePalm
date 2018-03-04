@@ -18,7 +18,7 @@ namespace FacePalm.ViewModel {
 
         public PointVm(Point point) {
             Point = point;
-            Marker = Glyph.Cross(point.Id);
+            Marker = Marking.Cross(point.Id);
             point.Defined += OnPointDefined;
         }
 
@@ -50,7 +50,7 @@ namespace FacePalm.ViewModel {
             }
         }
 
-        public Glyph Marker { get; }
+        public Marking Marker { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -58,11 +58,11 @@ namespace FacePalm.ViewModel {
 
         public void Rescale(double scale) => Marker.Show(Point.X, Point.Y, scale, MarkerSize);
 
-        public class Glyph {
+        public class Marking {
             private static readonly PathGeometry CrossPathGeometry = new PathGeometry();
             private static readonly Thickness    Thickness         = new Thickness(4, 0, 4, 1);
 
-            static Glyph() {
+            static Marking() {
                 var hline = new LineGeometry(new System.Windows.Point(-1, 0), new System.Windows.Point(1, 0));
                 var vline = new LineGeometry(new System.Windows.Point(0, -1), new System.Windows.Point(0, 1));
                 CrossPathGeometry.AddGeometry(hline);
@@ -81,7 +81,7 @@ namespace FacePalm.ViewModel {
                 }
             }
 
-            public static Glyph Cross(string label) => new Glyph {
+            public static Marking Cross(string label) => new Marking {
                 Label = new TextBlock {
                     Text = label,
                     Visibility = Visibility.Hidden,
@@ -99,13 +99,7 @@ namespace FacePalm.ViewModel {
             public void Show(double x, double y, double scale, double size) {
                 Path.StrokeThickness = 3.0 / size;
                 Path.RenderTransform = new MatrixTransform(size, 0, 0, size, x * scale, y * scale);
-                Label.RenderTransform = new MatrixTransform(
-                    1,
-                    0,
-                    0,
-                    1,
-                    (x + 0.25 * size) * scale,
-                    (y + 0.25 * size) * scale);
+                Label.RenderTransform = new TranslateTransform((x + 0.25 * size) * scale, (y + 0.25 * size) * scale);
             }
         }
 
