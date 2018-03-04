@@ -29,7 +29,12 @@ namespace FacePalm.Model {
             X = x;
             Y = y;
             IsDefined = true;
+            DefinedChanged?.Invoke(true);
         }
+
+        public delegate void DefinedHandler(bool isDefined);
+
+        public event DefinedHandler DefinedChanged;
 
         private void SetUp(string id, string group, string description) {
             Id = id;
