@@ -12,8 +12,8 @@ namespace FacePalmTest.Model {
         public void SetUp() {
             _p1 = new Point("point;Augen;23;Augenwinkel li außen;");
             _p2 = new Point("point;Augen;24;Augenwinkel re außen;");
-            _p1.X = _p1.Y = 1.0;
-            _p2.X = _p2.Y = 2.0;
+            _p1.Define(1.0, 1.0);
+            _p2.Define(2.0, 2.0);
             _segment = new Segment("segment;d1;23;24;Augenwinkel außen");
         }
 

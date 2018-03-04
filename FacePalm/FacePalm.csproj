@@ -70,11 +70,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\IDefinable.cs" />
+    <Compile Include="Model\IExportabe.cs" />
+    <Compile Include="Model\INamedObject.cs" />
+    <Compile Include="Model\Index.cs" />
     <Compile Include="Model\Line.cs" />
     <Compile Include="Model\Point.cs" />
     <Compile Include="Model\Segment.cs" />
     <Compile Include="IGeometryObject.cs" />
     <Compile Include="LineBase.cs" />
+    <Compile Include="Model\Tools.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Segment.cs" />
     <Compile Include="Session.cs" />

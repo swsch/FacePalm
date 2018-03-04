@@ -1,29 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Media;
+using static FacePalm.Model.Tools;
 
-namespace FacePalm.Model
-{
-    public class Segment
-    {
-        private static readonly Dictionary<string, Segment> Segments = new Dictionary<string, Segment>();
+namespace FacePalm.Model {
+    public class Segment : INamedObject, IExportabe, IDefinable {
+        private static readonly Index<Segment> Index = new Index<Segment>();
 
         public Segment(string csv) {
             var parts = csv.Split(';');
-            Id = parts[1];
-            P1 = Point.ById(parts[2]);
-            P2 = Point.ById(parts[3]);
-            Description = parts[4];
-            Segments[Id] = this;
+            SetUp(parts[1], parts[2], parts[3], parts[4]);
         }
 
-        public Point P1 { get; }
+        public Point P1 { get; private set; }
 
-        public Point P2 { get; }
-
-        public string Id { get; }
-
-        public string Description { get; }
+        public Point P2 { get; private set; }
 
         public double Length {
             get {
@@ -32,13 +21,26 @@ namespace FacePalm.Model
             }
         }
 
+        public bool IsDefined => P1.IsDefined && P2.IsDefined;
+
         public string ExportHeader => $"{Id}";
 
         public string ExportData => $"{Scale(Length)}";
 
-        private static int Scale(double d) => (int) (d * 100.0);
+        public string Id { get; private set; }
+
+        public string Description { get; private set; }
+
+        private void SetUp(string id, string p1, string p2, string description) {
+            Id = id;
+            P1 = Point.ById(p1);
+            P2 = Point.ById(p2);
+            Description = description;
+            Index.Register(this);
+        }
 
         public override string ToString() => $"{Id} [{P1.Id},{P2.Id}] = {Length:F2}";
 
-        public static Segment ById(string id) => Segments[id];    }
+        public static Segment ById(string id) => Index.ById(id);
+    }
 }

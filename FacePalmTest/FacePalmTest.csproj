@@ -51,6 +51,7 @@
     <Compile Include="Model\LineTests.cs" />
     <Compile Include="Model\PointTests.cs" />
     <Compile Include="Model\SegmentTests.cs" />
+    <Compile Include="Model\ToolsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

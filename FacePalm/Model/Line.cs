@@ -1,28 +1,32 @@
-﻿using System.Collections.Generic;
-
-namespace FacePalm.Model {
-    public class Line {
-        private static readonly Dictionary<string, Line> Lines = new Dictionary<string, Line>();
+﻿namespace FacePalm.Model {
+    public class Line : INamedObject, IDefinable {
+        private static readonly Index<Line> Index = new Index<Line>();
 
         public Line(string csv) {
             var parts = csv.Split(';');
-            Id = parts[1];
-            P1 = Point.ById(parts[2]);
-            P2 = Point.ById(parts[3]);
-            Description = parts[4];
-            Lines[Id] = this;
+            SetUp(parts[1], parts[2], parts[3], parts[4]);
         }
 
-        public Point P1 { get; }
+        public Point P1 { get; private set; }
 
-        public Point P2 { get; }
+        public Point P2 { get; private set; }
 
-        public string Id { get; }
+        public bool IsDefined => P1.IsDefined && P2.IsDefined;
 
-        public string Description { get; }
+        public string Id { get; private set; }
+
+        public string Description { get; private set; }
+
+        private void SetUp(string id, string p1, string p2, string description) {
+            Id = id;
+            P1 = Point.ById(p1);
+            P2 = Point.ById(p2);
+            Description = description;
+            Index.Register(this);
+        }
 
         public override string ToString() => $"{Id} <{P1.Id},{P2.Id}>";
 
-        public static Line ById(string id) => Lines[id];
+        public static Line ById(string id) => Index.ById(id);
     }
 }
