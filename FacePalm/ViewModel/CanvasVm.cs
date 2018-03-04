@@ -2,18 +2,20 @@
 
 namespace FacePalm.ViewModel {
     public class CanvasVm {
-        public delegate void ScaleChangedHandler(double scale);
+        public delegate void ScaleChangedHandler(CanvasVm c);
 
         private double _scale = 1.0;
 
-        public Canvas Canvas { get; } = new Canvas();
+        public CanvasVm(Canvas c) => Canvas = c;
+
+        public Canvas Canvas { get; }
 
         public double Scale {
             get => _scale;
             set {
                 if (value.Equals(_scale)) return;
                 _scale = value;
-                ScaleChanged?.Invoke(value);
+                ScaleChanged?.Invoke(this);
             }
         }
 
@@ -26,7 +28,13 @@ namespace FacePalm.ViewModel {
         public void Add(PointVm p) {
             Canvas.Children.Add(p.Marker.Path);
             Canvas.Children.Add(p.Marker.Label);
-            ScaleChanged += p.Rescale;
+            p.RedrawRequired += ShowPoint;
+            ScaleChanged += c => c.ShowPoint(p);
+        }
+
+        public void ShowPoint(PointVm p) {
+            if (!p.IsVisible) return;
+            p.Rescale(Scale);
         }
     }
 }

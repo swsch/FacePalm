@@ -9,15 +9,24 @@ using Point = FacePalm.Model.Point;
 
 namespace FacePalm.ViewModel {
     public class PointVm : INotifyPropertyChanged {
-        private bool _isVisible;
+        public delegate void RedrawHandler(PointVm p);
+
+        private bool       _isVisible;
+        private Visibility _visibility = Visibility.Hidden;
 
         public PointVm(Point point) {
             Point = point;
             Marker = Glyph.Cross(point.Id);
-            point.DefinedChanged += b => IsVisible = b;
+            point.Defined += delegate(Point p) {
+                IsVisible = p.IsDefined;
+                RedrawRequired?.Invoke(this);
+                OnPropertyChanged(nameof(IsDefined));
+            };
         }
 
-        public static double MarkerSize { get; set; }
+        public static double MarkerSize { get; set; } = 8.0;
+
+        public bool IsDefined => Point.IsDefined;
 
         public Point Point { get; }
 
@@ -25,20 +34,32 @@ namespace FacePalm.ViewModel {
             get => _isVisible;
             set {
                 if (value == _isVisible) return;
+                if (!Point.IsDefined) return;
                 _isVisible = value;
-                OnPropertyChanged(nameof(Visibility));
+                Visibility = IsVisible && IsDefined ? Visibility.Visible : Visibility.Hidden;
+                OnPropertyChanged();
             }
         }
 
-        public Visibility Visibility => IsVisible && Point.IsDefined ? Visibility.Visible : Visibility.Hidden;
+        public Visibility Visibility {
+            get => _visibility;
+            set {
+                if (value == _visibility) return;
+                _visibility = value;
+                Marker.Visibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Glyph Marker { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public void Place(CanvasVm c) => c.Add(this);
+        public event RedrawHandler RedrawRequired;
 
-        public void Rescale(double scale) => Marker.Place(Point.X, Point.Y, scale);
+        public void OnCanvas(CanvasVm c) => c.Add(this);
+
+        public void Rescale(double scale) => Marker.Show(Point.X, Point.Y, scale, MarkerSize);
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
@@ -60,23 +81,39 @@ namespace FacePalm.ViewModel {
 
             public TextBlock Label { get; private set; }
 
+            public Visibility Visibility {
+                set {
+                    if (Path.Visibility == value) return;
+                    Path.Visibility = value;
+                    Label.Visibility = value;
+                }
+            }
+
             public static Glyph Cross(string label) => new Glyph {
                 Label = new TextBlock {
                     Text = label,
+                    Visibility = Visibility.Hidden,
                     Foreground = MarkerBrush.Marker,
                     Background = MarkerBrush.Background,
                     Padding = Thickness
                 },
                 Path = new Path {
                     Data = CrossPathGeometry,
+                    Visibility = Visibility.Hidden,
                     Stroke = MarkerBrush.Marker
                 }
             };
 
-            public void Place(double x, double y, double scale) {
-                const double markerSize = 8.0;
-                Path.StrokeThickness = 3.0 / markerSize;
-                Path.RenderTransform = new MatrixTransform(markerSize, 0, 0, markerSize, x * scale, y * scale);
+            public void Show(double x, double y, double scale, double size) {
+                Path.StrokeThickness = 3.0 / size;
+                Path.RenderTransform = new MatrixTransform(size, 0, 0, size, x * scale, y * scale);
+                Label.RenderTransform = new MatrixTransform(
+                    1,
+                    0,
+                    0,
+                    1,
+                    (x + 0.5 * size) * scale,
+                    (y + 0.5 * size) * scale);
             }
         }
     }

@@ -60,7 +60,7 @@ namespace FacePalm {
         public string DefinitionsFile {
             get => _definitionsFile;
             set {
-                if (value == _definitionsFile || !File.Exists(value)) return;
+                if (value.Equals(_definitionsFile) || !File.Exists(value)) return;
                 _definitionsFile = value;
                 OnPropertyChanged();
                 GeometryDefinition = GeometryDefinition.FromFile(_definitionsFile);
