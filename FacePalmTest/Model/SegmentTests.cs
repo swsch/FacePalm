@@ -12,9 +12,9 @@ namespace FacePalmTest.Model {
         public void SetUp() {
             _p1 = new Point("point;Augen;23;Augenwinkel li außen;");
             _p2 = new Point("point;Augen;24;Augenwinkel re außen;");
+            _segment = new Segment("segment;d1;23;24;Augenwinkel außen");
             _p1.Define(1.0, 1.0);
             _p2.Define(2.0, 2.0);
-            _segment = new Segment("segment;d1;23;24;Augenwinkel außen");
         }
 
         [TestMethod]
@@ -23,6 +23,11 @@ namespace FacePalmTest.Model {
             Assert.AreEqual(_p1, _segment.P1);
             Assert.AreEqual(_p2, _segment.P2);
             Assert.AreEqual("Augenwinkel außen", _segment.Description);
+        }
+
+        [TestMethod]
+        public void SegmentDefinedTest() {
+            Assert.IsTrue(_segment.IsDefined);
         }
 
         [TestMethod]

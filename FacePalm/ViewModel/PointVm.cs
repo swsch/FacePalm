@@ -19,7 +19,7 @@ namespace FacePalm.ViewModel {
         public PointVm(Point point) {
             Point = point;
             Marker = Glyph.Cross(point.Id);
-            point.Defined += OnPointOnDefined;
+            point.Defined += OnPointDefined;
         }
 
         public static double MarkerSize { get; set; } = 8.0;
@@ -109,7 +109,7 @@ namespace FacePalm.ViewModel {
             }
         }
 
-        private void OnPointOnDefined(Point p) {
+        private void OnPointDefined(Point p) {
             IsVisible = p.IsDefined;
             RedrawRequired?.Invoke(this);
             OnPropertyChanged(nameof(IsDefined));

@@ -3,7 +3,12 @@ using static FacePalm.Model.Tools;
 
 namespace FacePalm.Model {
     public class Segment : INamedObject, IExportabe, IDefinable {
+        public delegate void SegmentChangedHandler(Segment s);
+
+        public event SegmentChangedHandler Defined;
+
         private static readonly Index<Segment> Index = new Index<Segment>();
+        private                 bool           _isDefined;
 
         public Segment(string csv) {
             var parts = csv.Split(';');
@@ -21,7 +26,14 @@ namespace FacePalm.Model {
             }
         }
 
-        public bool IsDefined => P1.IsDefined && P2.IsDefined;
+        public bool IsDefined {
+            get => _isDefined;
+            set {
+                if (value == _isDefined) return;
+                _isDefined = value;
+                Defined?.Invoke(this);
+            }
+        }
 
         public string ExportHeader => $"{Id}";
 
@@ -39,8 +51,14 @@ namespace FacePalm.Model {
             Id = id;
             P1 = Point.ById(p1);
             P2 = Point.ById(p2);
+            P1.Defined += OnPointDefined;
+            P2.Defined += OnPointDefined;
             Description = description;
             Index.Register(this);
+        }
+
+        private void OnPointDefined(Point p) {
+            IsDefined = P1.IsDefined && P2.IsDefined;
         }
     }
 }

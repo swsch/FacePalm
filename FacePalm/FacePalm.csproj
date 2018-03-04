@@ -85,6 +85,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Segment.cs" />
     <Compile Include="Session.cs" />
+    <Compile Include="ViewModel\SegmentVm.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>

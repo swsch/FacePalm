@@ -2,9 +2,9 @@
 
 namespace FacePalm.Model {
     public class Point : INamedObject, IExportabe, IDefinable {
-        public delegate void DefinedHandler(Point p);
+        public delegate void PointChangedHandler(Point p);
 
-        public event DefinedHandler Defined;
+        public event PointChangedHandler Defined;
 
         private static readonly Index<Point> Index = new Index<Point>();
 

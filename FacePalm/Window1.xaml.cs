@@ -22,18 +22,17 @@ namespace FacePalm {
     ///     Interaction logic for Window1.xaml
     /// </summary>
     public partial class Window1 : INotifyPropertyChanged {
-        private const double                ZoomStep   = 1.25;
-        private       double                _baseScale = 1.0;
-        private       bool                  _colorPhoto;
-        private       PointVm               _currentMarker;
-        private       double                _dpiXCorrection;
-        private       double                _dpiYCorrection;
-        private       FormatConvertedBitmap _greyscale;
-        private       CanvasVm              _markings;
-        private       BitmapImage           _original;
-        private       double                _scale = 1.0;
-        private       Session               _session;
-        private readonly List<PointVm> _points;
+        private const    double                ZoomStep = 1.25;
+        private readonly CanvasVm              _markings;
+        private          double                _baseScale = 1.0;
+        private          bool                  _colorPhoto;
+        private          PointVm               _currentMarker;
+        private          double                _dpiXCorrection;
+        private          double                _dpiYCorrection;
+        private          FormatConvertedBitmap _greyscale;
+        private          BitmapImage           _original;
+        private          double                _scale = 1.0;
+        private          Session               _session;
 
         public Window1() {
             InitializeComponent();
@@ -42,11 +41,10 @@ namespace FacePalm {
                 : new Session();
             _markings = new CanvasVm(Markings);
             var lines = File.ReadAllLines(Session.DefinitionsFile, Encoding.Default);
-            _points = lines.Where(l => l.StartsWith("point")).Select(l => new Point(l))
-                              .Select(p => new PointVm(p)).ToList();
-            foreach (var p in _points) {
-                p.AddToCanvas(_markings);
-            }
+            Points = lines.Where(l => l.StartsWith("point"))
+                          .Select(l => new PointVm(new Point(l)))
+                          .ToList();
+            foreach (var p in Points) p.AddToCanvas(_markings);
         }
 
         public Session Session {
@@ -81,11 +79,7 @@ namespace FacePalm {
             }
         }
 
-        public List<PointVm> Points {
-            get {
-                return _points;
-            }
-        }
+        public List<PointVm> Points { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -302,7 +296,8 @@ namespace FacePalm {
                     FileMode.Append,
                     FileAccess.Write)) {
                     var s = new StreamWriter(f);
-                    s.WriteLine($"M11={m.M11}, M22={m.M22}, g.DpiX={g.DpiX}, g.DpiY={g.DpiY}, i.DpiX={imageSource.DpiX}, i.DpiY={imageSource.DpiY}");
+                    s.WriteLine(
+                        $"M11={m.M11}, M22={m.M22}, g.DpiX={g.DpiX}, g.DpiY={g.DpiY}, i.DpiX={imageSource.DpiX}, i.DpiY={imageSource.DpiY}");
                     s.Close();
                 }
 #endif
@@ -399,13 +394,11 @@ namespace FacePalm {
         private void Axis_MouseDown(object sender, MouseButtonEventArgs e) {
             if (!((sender as FrameworkElement)?.DataContext is Axis axis)) return;
             axis.IsVisible = !axis.IsVisible;
-            RedrawLines(LineCanvas);
         }
 
         private void Segment_MouseDown(object sender, MouseButtonEventArgs e) {
             if (!((sender as FrameworkElement)?.DataContext is Segment segment)) return;
             segment.IsVisible = !segment.IsVisible;
-            RedrawSegments(SegmentCanvas);
         }
 
         private void Greyscale_Click(object sender, RoutedEventArgs e) {
@@ -413,15 +406,11 @@ namespace FacePalm {
         }
 
         private void ReduceMarkerSize_OnClick(object sender, RoutedEventArgs e) {
-            Marker.MarkerSize *= 0.8;
             _markings.MarkerSize *= 0.75;
-            RedrawPoints(PointCanvas);
         }
 
         private void IncreaseMarkerSize_OnClick(object sender, RoutedEventArgs e) {
-            Marker.MarkerSize /= 0.8;
             _markings.MarkerSize /= 0.75;
-            RedrawPoints(PointCanvas);
         }
 
         private void Tree_ItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
