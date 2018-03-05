@@ -8,7 +8,7 @@ namespace FacePalm {
     public class Axis : LineBase {
         private static readonly Thickness Padding = new Thickness(4, 0, 4, 1);
 
-        public Brush Brush => IsDefined ? MarkerBrush.Axis : MarkerBrush.Transparent;
+        public Brush Brush => IsDefined ? MarkerBrush.Line : MarkerBrush.Transparent;
 
         public override void Draw(Canvas canvas, double scale) {
             if (!IsVisible) return;

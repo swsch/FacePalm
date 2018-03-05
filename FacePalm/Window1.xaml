@@ -127,23 +127,26 @@
                               ItemsSource="{Binding Segments, Mode=OneWay}">
                     <TreeViewItem.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" MouseDown="Segment_MouseDown" MinWidth="280">
-                                <Border Background="LimeGreen" Width="6" Height="6" Margin="0,0,6,0" Style="{StaticResource Definable}" />
+                            <StackPanel Orientation="Horizontal" MinWidth="280">
+                                <Border Background="LimeGreen" Width="6" Height="6" Margin="0,0,6,0"
+                                        Style="{StaticResource Definable}" />
                                 <TextBlock Text="{Binding Segment.Id}" Style="{StaticResource Opaque}" />
-                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" Margin="0,0,6,0"/>
+                                <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" Margin="0,0,6,0" />
                                 <TextBlock Text="{Binding Segment.Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
                     </TreeViewItem.ItemTemplate>
                 </TreeViewItem>
                 <TreeViewItem Header="Lines"
-                              ItemsSource="{Binding Session.GeometryDefinition.Axes, Mode=OneWay}">
+                              ItemsSource="{Binding Lines, Mode=OneWay}">
                     <TreeViewItem.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" MouseDown="Axis_MouseDown" MinWidth="280">
-                                <TextBlock Text="{Binding Id}" Style="{StaticResource Opaque}" />
+                            <StackPanel Orientation="Horizontal" MinWidth="280">
+                                <Border Background="LimeGreen" Width="6" Height="6" Margin="0,0,6,0"
+                                        Style="{StaticResource Definable}" />
+                                <TextBlock Text="{Binding Line.Id}" Style="{StaticResource Opaque}" />
                                 <CheckBox IsChecked="{Binding IsVisible,Mode=TwoWay}" />
-                                <TextBlock Text="{Binding Description}" Width="Auto" />
+                                <TextBlock Text="{Binding Line.Description}" Width="Auto" />
                             </StackPanel>
                         </DataTemplate>
                     </TreeViewItem.ItemTemplate>
@@ -168,9 +171,6 @@
                     <Image x:Name="Photo" Stretch="None" MouseDown="Photo_MouseDown"
                            Source="{Binding PhotoSource, Mode=OneWay}" />
                     <Canvas x:Name="Markings" IsHitTestVisible="False" Clip="{Binding Clip, ElementName=Photo}" />
-                    <Canvas x:Name="LineCanvas" IsHitTestVisible="False" />
-                    <Canvas x:Name="SegmentCanvas" IsHitTestVisible="False" />
-                    <Canvas x:Name="PointCanvas" IsHitTestVisible="False" Clip="{Binding Clip, ElementName=Photo}" />
                 </Canvas>
             </ScrollViewer>
         </Grid>

@@ -71,6 +71,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\CanvasVm.cs" />
+    <Compile Include="ViewModel\LineVm.cs" />
     <Compile Include="ViewModel\PointVm.cs" />
     <Compile Include="Model\IDefinable.cs" />
     <Compile Include="Model\IExportabe.cs" />

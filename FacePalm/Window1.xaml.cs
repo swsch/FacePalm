@@ -7,11 +7,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FacePalm.Annotations;
+using FacePalm.Model;
 using FacePalm.ViewModel;
 using Microsoft.Win32;
 using Point = FacePalm.Model.Point;
@@ -49,6 +49,10 @@ namespace FacePalm {
                             .Select(l => new SegmentVm(new Model.Segment(l)))
                             .ToList();
             foreach (var s in Segments) s.AddToCanvas(_markings);
+            Lines = lines.Where(l => l.StartsWith("line"))
+                         .Select(l => new LineVm(new Line(l)))
+                         .ToList();
+            foreach (var l in Lines) l.AddToCanvas(_markings);
         }
 
         public Session Session {
@@ -84,16 +88,14 @@ namespace FacePalm {
         }
 
         public List<PointVm> Points { get; }
+
         public List<SegmentVm> Segments { get; }
+
+        public List<LineVm> Lines { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void GeometryDefinition_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (e.PropertyName.Equals("DefinedMarkersCount")) {
-                RedrawSegments(SegmentCanvas);
-                RedrawLines(LineCanvas);
-            }
-        }
+        private void GeometryDefinition_PropertyChanged(object sender, PropertyChangedEventArgs e) { }
 
 
         private void ZoomNormal_Click(object sender, RoutedEventArgs e) {
@@ -133,9 +135,6 @@ namespace FacePalm {
             var result1 = d1.ShowDialog();
             if (result1 != true) return;
             Session = new Session(d1.FileName, Session.ImageFile);
-            RedrawSegments(SegmentCanvas);
-            RedrawLines(LineCanvas);
-            RedrawPoints(PointCanvas);
         }
 
         private void Viewer_SizeChanged(object sender, SizeChangedEventArgs e) {
@@ -156,11 +155,6 @@ namespace FacePalm {
                 } else {
                     Session = s;
                     LoadPhoto(new Uri(s.ImageFile, UriKind.Absolute));
-                    foreach (var m in s.GeometryDefinition.Markers) {
-                        m.PropertyChanged += (src, cea) => {
-                            if (cea.PropertyName.Equals("IsVisible")) RedrawPoints(PointCanvas);
-                        };
-                    }
                 }
             }
         }
@@ -267,24 +261,6 @@ namespace FacePalm {
             _scale = newScale;
         }
 
-        private void RedrawLines(Canvas c) {
-            c.Children.Clear();
-            foreach (var line in Session.GeometryDefinition.Axes.Where(l => l.IsDefined && l.IsVisible))
-                line.Draw(c, _scale);
-        }
-
-        private void RedrawPoints(Canvas c) {
-            c.Children.Clear();
-            foreach (var marker in Session.GeometryDefinition.Markers.Where(m => m.IsDefined && m.IsVisible))
-                marker.Draw(c, _scale);
-        }
-
-        private void RedrawSegments(Canvas c) {
-            c.Children.Clear();
-            foreach (var segment in Session.GeometryDefinition.Segments.Where(s => s.IsDefined && s.IsVisible))
-                segment.Draw(c, _scale);
-        }
-
         private void DpiCorrection(BitmapImage imageSource) {
             var ct = PresentationSource.FromVisual(this)?.CompositionTarget;
             if (ct is null) {
@@ -369,42 +345,33 @@ namespace FacePalm {
         }
 
         private void HideAll_Click(object sender, RoutedEventArgs e) {
-            PointCanvas.Visibility = Visibility.Hidden;
-            LineCanvas.Visibility = Visibility.Hidden;
-            SegmentCanvas.Visibility = Visibility.Hidden;
+            foreach (var p in Points) p.IsVisible = false;
+            foreach (var l in Lines) l.IsVisible = false;
+            foreach (var s in Segments) s.IsVisible = false;
         }
 
         private void ShowAll_Click(object sender, RoutedEventArgs e) {
-            PointCanvas.Visibility = Visibility.Visible;
-            LineCanvas.Visibility = Visibility.Visible;
-            SegmentCanvas.Visibility = Visibility.Visible;
+            foreach (var p in Points) p.IsVisible = true;
+            foreach (var l in Lines) l.IsVisible = true;
+            foreach (var s in Segments) s.IsVisible = true;
         }
 
         private void ShowPoints_Click(object sender, RoutedEventArgs e) {
-            PointCanvas.Visibility = Visibility.Visible;
+            foreach (var p in Points) p.IsVisible = true;
         }
 
         private void ShowLines_Click(object sender, RoutedEventArgs e) {
-            LineCanvas.Visibility = Visibility.Visible;
+            foreach (var l in Lines) l.IsVisible = true;
         }
 
         private void ShowSegments_Click(object sender, RoutedEventArgs e) {
-            SegmentCanvas.Visibility = Visibility.Visible;
+            foreach (var s in Segments) s.IsVisible = true;
         }
 
         private void Quit_Click(object sender, RoutedEventArgs e) {
             Close();
         }
 
-        private void Axis_MouseDown(object sender, MouseButtonEventArgs e) {
-            if (!((sender as FrameworkElement)?.DataContext is Axis axis)) return;
-            axis.IsVisible = !axis.IsVisible;
-        }
-
-        private void Segment_MouseDown(object sender, MouseButtonEventArgs e) {
-            if (!((sender as FrameworkElement)?.DataContext is Segment segment)) return;
-            segment.IsVisible = !segment.IsVisible;
-        }
 
         private void Greyscale_Click(object sender, RoutedEventArgs e) {
             ColorPhoto = !ColorPhoto;

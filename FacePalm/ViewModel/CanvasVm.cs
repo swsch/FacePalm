@@ -56,5 +56,17 @@ namespace FacePalm.ViewModel {
             if (!s.IsVisible) return;
             s.Rescale(Scale);
         }
+
+        public void Add(LineVm l) {
+            Canvas.Children.Add(l.Marker.Path);
+            Canvas.Children.Add(l.Marker.Label);
+            l.RedrawRequired += ShowLine;
+            ScaleChanged += c => c.ShowLine(l);
+        }
+
+        public void ShowLine(LineVm l) {
+            if (!l.IsVisible) return;
+            l.Rescale(Scale);
+        }
     }
 }
