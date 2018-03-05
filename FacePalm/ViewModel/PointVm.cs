@@ -22,6 +22,8 @@ namespace FacePalm.ViewModel {
             point.Defined += OnPointDefined;
         }
 
+        public string Description => Point.Description;
+
         public static double MarkerSize { get; set; } = 8.0;
 
         public bool IsDefined => Point.IsDefined;

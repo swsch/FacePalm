@@ -49,6 +49,8 @@ namespace FacePalm.ViewModel {
 
         public Marking Marker { get; set; }
 
+        public string Description => $"{Segment.Description} [{Segment.P1.Id},{Segment.P2.Id}]";
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

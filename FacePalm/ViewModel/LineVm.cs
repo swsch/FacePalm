@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,12 +50,17 @@ namespace FacePalm.ViewModel {
 
         public Marking Marker { get; set; }
 
+        public string Description => $"{Line.Description} [{Line.P1.Id},{Line.P2.Id}]";
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Rescale(double scale) => Marker.Show(Line.P1, Line.P2, scale);
 
         public class Marking {
             private static readonly Thickness Thickness = new Thickness(4, 0, 4, 1);
+            private                 double    _d;
+            private                 double    _dx;
+            private                 double    _dy;
 
             private Marking() { }
 
@@ -86,18 +92,26 @@ namespace FacePalm.ViewModel {
             };
 
             public void Update(Model.Point p1, Model.Point p2) {
-                Path.Data = new LineGeometry(new Point(p1.X, p1.Y), new Point(p2.X, p2.Y));
+                _dy = p1.Y - p2.Y;
+                _dx = p1.X - p2.X;
+                _d = Math.Sqrt(_dx * _dx + _dy * _dy);
+                var wp1 = new Point(p1.X, p1.Y);
+                wp1.Offset(960 * _dx / _d, 960 * _dy / _d);
+                var wp2 = new Point(p2.X, p2.Y);
+                wp2.Offset(-960 * _dx / _d, -960 * _dy / _d);
+                Path.Data = new LineGeometry(wp1, wp2);
             }
 
             public void Show(Model.Point p1, Model.Point p2, double scale) {
                 Update(p1, p2);
                 Path.StrokeThickness = 2 / scale;
                 Path.RenderTransform = new ScaleTransform(scale, scale);
-                var xl = (p1.X + p2.X) / 2.0;
-                var yl = (p1.Y + p2.Y) / 2.0;
-                Label.RenderTransform = new TranslateTransform(xl * scale, yl * scale);
+                Label.RenderTransform = new TranslateTransform(
+                    (p1.X + 48 * _dx / _d) * scale,
+                    (p1.Y + 48 * _dy / _d) * scale);
             }
         }
+
 
         public void AddToCanvas(CanvasVm c) => c.Add(this);
 
