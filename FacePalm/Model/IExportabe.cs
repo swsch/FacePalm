@@ -4,6 +4,6 @@
 
         string ExportHeader { get; }
 
-        string ExportData { get; }
+        string ExportData(double c);
     }
 }

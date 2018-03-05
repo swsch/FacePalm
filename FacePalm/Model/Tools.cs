@@ -1,5 +1,5 @@
 ﻿namespace FacePalm.Model {
     public static class Tools {
-        public static int Scale(double d) => (int) (d * 100.0);
+        public static int Scale(double d, double c) => (int) (d * c * 100.0);
     }
 }

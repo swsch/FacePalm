@@ -6,8 +6,8 @@ namespace FacePalmTest.Model {
     public class ToolsTests {
         [TestMethod]
         public void ScaleTest() {
-            Assert.AreEqual(100, Scale(1.0));
-            Assert.AreEqual(99, Scale(0.9999));
+            Assert.AreEqual(200, Scale(1.0, 2));
+            Assert.AreEqual(99, Scale(0.333, 3));
         }
     }
 }

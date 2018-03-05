@@ -23,7 +23,7 @@ namespace FacePalm.Model {
 
         public string ExportHeader => $"X{Id};Y{Id}";
 
-        public string ExportData => $"{Scale(X)};{Scale(Y)}";
+        public string ExportData(double c) => $"{Scale(X, c)};{Scale(Y, c)}";
 
         public string Id { get; private set; }
 

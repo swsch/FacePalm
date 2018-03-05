@@ -112,7 +112,7 @@ namespace FacePalm {
         private void Photo_MouseDown(object sender, MouseButtonEventArgs e) {
             var clickPosition = e.MouseDevice.GetPosition(Photo);
             if (CurrentMarker == null) return;
-            CurrentMarker.Point.Define(clickPosition.X * _dpiXCorrection, clickPosition.Y * _dpiYCorrection);
+            CurrentMarker.Point.Define(clickPosition.X, clickPosition.Y);
             e.Handled = true;
         }
 
@@ -125,8 +125,9 @@ namespace FacePalm {
             var d = new OpenFileDialog {Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp"};
             var result = d.ShowDialog();
             if (result != true) return;
-            Session = new Session(Session.DefinitionsFile, d.FileName);
+            //Session = new Session(Session.DefinitionsFile, d.FileName);
             LoadPhoto(new Uri(d.FileName, UriKind.Absolute));
+
         }
 
         private void LoadDefinitions_Click(object sender, RoutedEventArgs e) {
@@ -314,18 +315,16 @@ namespace FacePalm {
             var writeHeaders = !File.Exists(filename);
             try {
                 using (var sw = new StreamWriter(filename, true, Encoding.Default)) {
-                    var markers = new List<Marker>(Session.GeometryDefinition.Markers);
-                    var segments = new List<Segment>(Session.GeometryDefinition.Segments);
                     if (writeHeaders) {
                         sw.Write("Id");
-                        markers.ForEach(m => sw.Write($";X{m.Id};Y{m.Id}"));
-                        segments.ForEach(s => sw.Write($";{s.Id}"));
+                        Points.ForEach(m => sw.Write($";{m.Point.ExportHeader}"));
+                        Segments.ForEach(s => sw.Write($";{s.Segment.ExportHeader}"));
                         sw.WriteLine();
                     }
 
                     sw.Write(Session.Id);
-                    markers.ForEach(m => sw.Write($";{S(m.Point.X, _dpiXCorrection)};{S(m.Point.Y, _dpiYCorrection)}"));
-                    segments.ForEach(s => sw.Write($";{S(s.Length(_dpiXCorrection, _dpiYCorrection))}"));
+                    Points.ForEach(m => sw.Write($";{m.Point.ExportData(_dpiXCorrection)}"));
+                    Segments.ForEach(s => sw.Write($";{s.Segment.ExportData(_dpiXCorrection)}"));
                     sw.WriteLine();
                 }
             } catch (IOException) {

@@ -29,10 +29,6 @@ namespace FacePalm.ViewModel {
             }
         }
 
-        public void ZoomIn() => _scale += 0.125;
-
-        public void ZoomOut() => _scale -= 0.125;
-
         public void Add(PointVm p) {
             Canvas.Children.Add(p.Marker.Path);
             Canvas.Children.Add(p.Marker.Label);

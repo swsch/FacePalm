@@ -38,7 +38,7 @@ namespace FacePalmTest.Model {
 
         [TestMethod]
         public void ExportDataTest() {
-            Assert.AreEqual("100;99", _p1.ExportData);
+            Assert.AreEqual("100;99", _p1.ExportData(1));
         }
     }
 }

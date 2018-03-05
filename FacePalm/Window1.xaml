@@ -92,7 +92,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TreeView DockPanel.Dock="Left"
+            <TreeView Grid.Column="0"
                       SelectedItemChanged="Tree_ItemChanged"
                       HorizontalAlignment="Stretch"
                       MinWidth="200">

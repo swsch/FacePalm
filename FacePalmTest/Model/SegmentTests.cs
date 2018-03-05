@@ -47,7 +47,7 @@ namespace FacePalmTest.Model {
 
         [TestMethod]
         public void ExportDataTest() {
-            Assert.AreEqual("141", _segment.ExportData);
+            Assert.AreEqual("141", _segment.ExportData(1));
         }
     }
 }
