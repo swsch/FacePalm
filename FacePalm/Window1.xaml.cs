@@ -31,7 +31,6 @@ namespace FacePalm {
         private          double                _dpiYCorrection;
         private          FormatConvertedBitmap _greyscale;
         private          BitmapImage           _original;
-        private          double                _scale = 1.0;
         private          Session               _session;
 
         public Window1() {
@@ -103,11 +102,11 @@ namespace FacePalm {
         }
 
         private void ZoomIn_Click(object sender, RoutedEventArgs e) {
-            ZoomPhoto(_scale * ZoomStep);
+            ZoomPhoto(Math.Min(10, _markings.Scale * ZoomStep));
         }
 
         private void ZoomOut_Click(object sender, RoutedEventArgs e) {
-            ZoomPhoto(Math.Max(_baseScale, _scale / ZoomStep));
+            ZoomPhoto(Math.Max(_baseScale, _markings.Scale / ZoomStep));
         }
 
         private void Photo_MouseDown(object sender, MouseButtonEventArgs e) {
@@ -255,10 +254,9 @@ namespace FacePalm {
             Photo.LayoutTransform = new ScaleTransform(newScale, newScale, 0, 0);
             Drawing.Width = Math.Max(image.Width * newScale, Viewer.ViewportWidth);
             Drawing.Height = Math.Max(image.Height * newScale, Viewer.ViewportHeight);
-            Viewer.ScrollToHorizontalOffset(newScale / _scale * Viewer.HorizontalOffset);
-            Viewer.ScrollToVerticalOffset(newScale / _scale * Viewer.VerticalOffset);
+            Viewer.ScrollToHorizontalOffset(newScale / _markings.Scale * Viewer.HorizontalOffset);
+            Viewer.ScrollToVerticalOffset(newScale / _markings.Scale * Viewer.VerticalOffset);
             _markings.Scale = newScale;
-            _scale = newScale;
         }
 
         private void DpiCorrection(BitmapImage imageSource) {
