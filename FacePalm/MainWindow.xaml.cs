@@ -326,8 +326,8 @@ namespace FacePalm {
                         sw.WriteLine();
                     }
                     sw.Write(Session.Id);
-                    markers.ForEach(m => sw.Write($";{S(m.Point.X, _dpiXCorrection)};{S(m.Point.Y, _dpiYCorrection)}"));
-                    segments.ForEach(s => sw.Write($";{S(s.Length(_dpiXCorrection, _dpiYCorrection))}"));
+                    markers.ForEach(m => sw.Write(m.IsDefined ? $";{S(m.Point.X, _dpiXCorrection)};{S(m.Point.Y, _dpiYCorrection)}" : ";;"));
+                    segments.ForEach(s => sw.Write(s.IsDefined ? $";{S(s.Length(_dpiXCorrection, _dpiYCorrection))}" : ";"));
                     sw.WriteLine();
                 }
             } catch (IOException) {
